@@ -50,10 +50,6 @@ public class PvPCommand implements CommandExecutor {
                             target.getInventory().addItem(ItemManager.createAtomItem());
                             sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_given").replace("{player}", target.getName()));
                             target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_received"));
-                        } else if(args[0].equalsIgnoreCase("build")) {
-                            target.getInventory().addItem(ItemManager.createAntiBuildItem());
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.build_given").replace("{player}", target.getName()));
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.build_received"));
                         } else if(args[0].equalsIgnoreCase("boost"))    {
                             target.getInventory().addItem(ItemManager.createAntiBoostItem());
                             sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_given").replace("{player}", target.getName()));

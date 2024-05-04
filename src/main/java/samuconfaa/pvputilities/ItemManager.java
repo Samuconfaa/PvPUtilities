@@ -32,14 +32,6 @@ public class ItemManager {
     }
 
 
-    public static ItemStack createAntiBuildItem() {
-        ItemStack item = new ItemStack(Material.STICK);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ConfigurationManager.getAntiBuildItemName("items.antibuild.name"));
-        meta.setLore(ConfigurationManager.getAntiBuildLore("items.antibuild.lore"));
-        item.setItemMeta(meta);
-        return item;
-    }
 
     public static ItemStack createAntiBoostItem() {
         ItemStack item = new ItemStack(Material.STICK);

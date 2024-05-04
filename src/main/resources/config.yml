@@ -12,10 +12,6 @@ atom:
   range: 5              #Raggio d'azione in blocchi dell'item ATOM
   cooldown: 5           #Durata in secondi del cooldown prima di riutilizzare ATOM
 
-build:
-  cooldown: 90
-  range: 20
-  playercooldown: 10
 
 boost:
   cooldown: 90
@@ -43,13 +39,10 @@ messages:
   reload: "§cFile di configurazione ricaricato con successo (si spera)"
   flash_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Flash nuovamente!"
   atom_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Atom nuovamente!"
-  build_given: "§aHai dato Anti-Build a {player}"
-  build_received: "§aHai ricevuto AntiBuild"
   boost_given: "§aHai dato Anti-Boost a {player}"
   boost_received: "§aHai ricevuto Anti-Boost"
   cesoie_given: "§aHai dato Cesoie a {player}"
   cesoie_received: "§aHai ricevuto Cesoie"
-  build_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Anti-Build nuovamente!"
   boost_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Anti-Boost nuovamente!"
   pick_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Piccone nuovamente!"
   cesoie_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Cesoie nuovamente!"
@@ -71,10 +64,6 @@ items:
       - "§7Tasto Destro per usare!"
   atom:
     name: "§6§lAtom"
-    lore:
-      - "§7Tasto Destro per usare!"
-  antibuild:
-    name: "§2§lAnti-Build"
     lore:
       - "§7Tasto Destro per usare!"
   antiboost:

@@ -43,9 +43,6 @@ public class ConfigurationManager {
         return config.getInt("atom.cooldown", 90);
     }
 
-    public int getBuildCooldown() {
-        return config.getInt("build.cooldown", 90);
-    }
 
     public int getBoostCooldown() {
         return config.getInt("boost.cooldown", 90);
@@ -114,21 +111,14 @@ public class ConfigurationManager {
     }
 
 
-    public static String getBuildCooldownMessage() {
-        return ChatColor.translateAlternateColorCodes('&', config.getString("messages.build_cooldown_message"));
-    }
 
     public static String getBoostCooldownMessage() {
         return ChatColor.translateAlternateColorCodes('&', config.getString("messages.boost_cooldown_message"));
     }
 
-    public static String getAntiBuildItemName(String s) {
-        return config.getString("items.antibuild.name", "§2§lAnti-Build");
-    }
 
-    public static List<String> getAntiBuildLore(String s) {
-        return Collections.singletonList(config.getString("items.antibuild.lore", "§7Tasto Destro per usare!"));
-    }
+
+
 
     public static String getAntiBoostItemName(String s) {
         return config.getString("items.antiboost.name", "§2§lAnti-Boost");
@@ -138,13 +128,7 @@ public class ConfigurationManager {
         return Collections.singletonList(config.getString("items.antiboost.lore", "§7Tasto Destro per usare!"));
     }
 
-    public int getBuildPlayerCooldown()  {
-        return config.getInt("build.playercooldown", 10);
-    }
 
-    public int getBuildRange()  {
-        return config.getInt("build.range", 20);
-    }
 
 
     public int getPickRange()  {

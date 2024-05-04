@@ -54,8 +54,6 @@ public class PlayerListener implements Listener {
                 handleFlash(event);
             } else if (event.getItem().isSimilar(ItemManager.createAtomItem())) {
                 handleAtom(event);
-            } else if (event.getItem().isSimilar(ItemManager.createAntiBuildItem())) {
-                handleBuild(event);
             } else if (event.getItem().isSimilar(ItemManager.createAntiBoostItem())) {
                 handleBoost(event);
             } else if (event.getItem().isSimilar(createPickItem())) {
@@ -135,63 +133,6 @@ public class PlayerListener implements Listener {
         }
     }
 
-    private void handleBuild(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
-
-        int cooldownPlayer = PvPUtilities.getInstance().getConfigManager().getBuildPlayerCooldown();
-        if (CooldownManager.canUse(player, "build")) {
-            int cooldown = PvPUtilities.getInstance().getConfigManager().getBuildCooldown();
-
-            int range = PvPUtilities.getInstance().getConfigManager().getBuildRange();
-
-            boolean playerFound = false;
-            Player targetPlayer = null;
-
-
-            for (Entity entity : player.getNearbyEntities(range, range, range)) {
-                if (entity instanceof Player && !entity.equals(player)) {
-                    playerFound = true;
-                    targetPlayer = (Player) entity;
-                    break;
-                }
-            }
-
-
-            if (playerFound) {
-                // Impedisce al player target di piazzare blocchi
-                targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, cooldown * 20, 255));
-
-                // Avvia il countdown del cooldown
-                Player finalTargetPlayer = targetPlayer;
-                Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                    // Rimuove l'effetto di non poter piazzare blocchi
-                    finalTargetPlayer.removePotionEffect(PotionEffectType.SLOW_DIGGING);
-                }, cooldownPlayer * 20);
-
-                // Mandare un messaggio al player
-                targetPlayer.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noblock"));
-
-                CooldownManager.setCooldown(player, "build", cooldown);
-                item.setAmount(item.getAmount() - 1);
-            } else {
-                // Se non ci sono player nel raggio, o se ne sto guardando due assieme, manda un messaggio al player
-                player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noplayer"));
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-
-
-
-            }
-        } else {
-
-            long remainingCooldown = CooldownManager.getRemainingCooldown(player, "build");
-            int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-            player.sendMessage(ConfigurationManager.getBuildCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
-
-        }
-
-    }
 
     private void handleBoost(PlayerInteractEvent event){
         Player player = event.getPlayer();

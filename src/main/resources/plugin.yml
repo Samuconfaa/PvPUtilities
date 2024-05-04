@@ -6,7 +6,7 @@ main: samuconfaa.pvputilities.PvPUtilities
 commands:
   pvpu:
     description: Dà oggetti PvP ai giocatori.
-    usage: /pvpu <flash|atom|boost|build|pick|cesoie> <player>
+    usage: /pvpu <flash|atom|boost|pick|cesoie> <player>
   reload:
     description: Ricarica il file di configurazione.
     usage: /pvpu reload
