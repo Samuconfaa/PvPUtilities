@@ -80,20 +80,20 @@ public class ConfigurationManager {
     }
 
     public static String getAtomItemName(String s) {
-        return config.getString("items.atom.name", "&6&lAtom");
+        return config.getString("items.atom.name", "§6§lAtom");
     }
 
     public static List<String> getAtomItemLore(String s) {
-        return Collections.singletonList(config.getString("items.atom.lore", "&7Tasto Destro per usare!"));
+        return Collections.singletonList(config.getString("items.atom.lore", "§7Tasto Destro per usare!"));
     }
 
 
     public static String getFlashItemName(String s) {
-        return config.getString("items.flash.name", "&b&lFlash");
+        return config.getString("items.flash.name", "§b§lFlash");
     }
 
     public static List<String> getFlashItemLore(String s) {
-        return Collections.singletonList(config.getString("items.flash.lore", "&7Tasto Destro per usare!"));
+        return Collections.singletonList(config.getString("items.flash.lore", "§7Tasto Destro per usare!"));
     }
 
 
@@ -123,19 +123,19 @@ public class ConfigurationManager {
     }
 
     public static String getAntiBuildItemName(String s) {
-        return config.getString("items.antibuild.name", "&2&lAnti-Build");
+        return config.getString("items.antibuild.name", "§2§lAnti-Build");
     }
 
     public static List<String> getAntiBuildLore(String s) {
-        return Collections.singletonList(config.getString("items.antibuild.lore", "&7Tasto Destro per usare!"));
+        return Collections.singletonList(config.getString("items.antibuild.lore", "§7Tasto Destro per usare!"));
     }
 
     public static String getAntiBoostItemName(String s) {
-        return config.getString("items.antiboost.name", "&2&lAnti-Boost");
+        return config.getString("items.antiboost.name", "§2§lAnti-Boost");
     }
 
     public static List<String> getAntiBoostLore(String s) {
-        return Collections.singletonList(config.getString("items.antiboost.lore", "&7Tasto Destro per usare!"));
+        return Collections.singletonList(config.getString("items.antiboost.lore", "§7Tasto Destro per usare!"));
     }
 
     public int getBuildPlayerCooldown()  {
@@ -154,20 +154,20 @@ public class ConfigurationManager {
 
 
     public static List<String> getPickLore(String s) {
-        return Collections.singletonList(config.getString("items.pick.lore", "&7Tasto Destro per usare!"));
+        return Collections.singletonList(config.getString("items.pick.lore", "§7Tasto Destro per usare!"));
     }
 
     public static String getPickItemName(String s) {
-        return config.getString("items.pick.name", "&3&lPiccone");
+        return config.getString("items.pick.name", "§3§lPiccone");
     }
 
 
     public static String getCesoieItemName(String s) {                      //aggiungere al config
-        return config.getString("items.cesoie.name", "&6&lCesoie");
+        return config.getString("items.cesoie.name", "§6§lCesoie");
     }
 
     public static List<String> getCesoieLore(String s) {                    //aggiungere al config
-        return Collections.singletonList(config.getString("items.cesoie.lore", "&7Tasto Destro per usare!"));
+        return Collections.singletonList(config.getString("items.cesoie.lore", "§7Tasto Destro per usare!"));
     }
 
 

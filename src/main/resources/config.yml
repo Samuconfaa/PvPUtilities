@@ -38,7 +38,7 @@ messages:
   invalid_item: "§cTipo di oggetto PvP non valido."
   player_not_found: "§cPlayer {player} non trovato o non online."
   no_permission: "§cNon hai il permesso per usare questo comando."
-  incorrect_usage: "§cUtilizzo: /pvpu <flash|atom> <player>"
+  incorrect_usage: "§cUtilizzo: /pvpu <flash|atom|boost|build|pick|cesoie> <player>"
   no_reload_permission: "§cNon hai il permesso di ricaricare il file di configurazione"
   reload: "§cFile di configurazione ricaricato con successo (si spera)"
   flash_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Flash nuovamente!"
@@ -58,6 +58,8 @@ messages:
   noBow: "§cNon puoi utilizzare l'arco"
   pick_given: "§aHai dato Piccone a {player}"
   pick_received: "§aHai ricevuto Piccone!"
+  noObsidian: "§cNon stai guardando nessun blocco di ossidiana!"
+  noCobweb: "§cNon stai guardando nessuna ragnatela!"
 
 
 
@@ -81,5 +83,9 @@ items:
       - "§7Tasto Destro per usare!"
   pick:
     name: "§4§lPiccone"
+    lore:
+      - "§7Tasto Destro per usare!"
+  cesoie:
+    name: "§6§lCesoie"
     lore:
       - "§7Tasto Destro per usare!"

@@ -327,6 +327,9 @@ public class PlayerListener implements Listener {
                     }
                     CooldownManager.setCooldown(player, "cesoie", cooldown);
                     item.setAmount(item.getAmount() - 1);
+                } else {
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noCobweb"));
                 }
 
 

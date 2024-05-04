@@ -1,3 +1,21 @@
 name: PvPUtilities
-version: '${project.version}'
+version: 1.0
+description: Un plugin per item custom nel kitpvp
+author: Samuconfaa
 main: samuconfaa.pvputilities.PvPUtilities
+commands:
+  pvpu:
+    description: Dà oggetti PvP ai giocatori.
+    usage: /pvpu <flash|atom|boost|build|pick|cesoie> <player>
+  reload:
+    description: Ricarica il file di configurazione.
+    usage: /pvpu reload
+permissions:
+  pvpu.pvp:
+    description: Permette l'uso del comando /pvpu.
+    default: op
+  pvpu.reload:
+    description: Permette la ricarica del file di configurazione.
+    default: op
+
+

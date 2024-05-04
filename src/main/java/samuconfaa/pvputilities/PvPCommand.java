@@ -21,6 +21,10 @@ public class PvPCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (label.equalsIgnoreCase("pvpu")) {
+            if (!(sender instanceof Player) || !(sender.hasPermission("pvpu.pvp"))){
+                sender.sendMessage("§4PvPUtilities Custum Items by Samuconfaa");
+                return true;
+            }
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("pvpu.reload")) {
                     plugin.reloadConfig();
@@ -31,6 +35,10 @@ public class PvPCommand implements CommandExecutor {
 
                 return true;
             } else if (args.length == 2) {
+                if (!(sender instanceof Player) || !(sender.hasPermission("pvpu.pvp"))){
+                    sender.sendMessage("§4PvPUtilities Custum Items by Samuconfaa");
+                    return true;
+                }
                 if (!(sender instanceof Player) || sender.hasPermission("pvpu.pvp")) {
                     Player target = Bukkit.getPlayer(args[1]);
                     if (target != null) {
@@ -52,8 +60,8 @@ public class PvPCommand implements CommandExecutor {
                             target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_received"));
                         } else if(args[0].equalsIgnoreCase("pick"))    {
                             target.getInventory().addItem(ItemManager.createPickItem());
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_given").replace("{player}", target.getName()));  
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_received"));  
+                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_given").replace("{player}", target.getName()));
+                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_received"));
                         } else if (args[0].equalsIgnoreCase("cesoie")) {
                             target.getInventory().addItem(ItemManager.createCesoieItem());
                             sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.cesoie_given").replace("{player}", target.getName()));     //aggiungere al config
@@ -66,13 +74,14 @@ public class PvPCommand implements CommandExecutor {
                     }
                     return true;
                 } else {
-                    sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.no_permission"));
+                    sender.sendMessage("§4PvPUtilities Custum Items by Samuconfaa");
+                    return true;
                 }
-            } else {
+            } else if (sender.hasPermission("pvpu.pvp")) {
                 sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.incorrect_usage"));
+                return  true;
             }
         }
         return false;
     }
 }
-
