@@ -1,0 +1,3 @@
+name: PvPUtilities
+version: '${project.version}'
+main: samuconfaa.pvputilities.PvPUtilities

@@ -1,0 +1,85 @@
+#File di configurazione del plugin PvPUtilities
+#             Fatto da Samuconfaa.
+#Per info scrivermi su discord. Trovate tutto qua:
+#         https://samuconfaa.it/info
+
+flash:
+  jump_distance: 5      #Distanza in blocchi del salto
+  effect_duration: 5    #Durata in secondi dell'effetto speed applicato
+  cooldown: 10          #Durata in secondi del cooldown prima di riutilizzare FLASH
+
+atom:
+  range: 5              #Raggio d'azione in blocchi dell'item ATOM
+  cooldown: 5           #Durata in secondi del cooldown prima di riutilizzare ATOM
+
+build:
+  cooldown: 90
+  range: 20
+  playercooldown: 10
+
+boost:
+  cooldown: 90
+  range: 20
+  playercooldown: 10
+
+pick:
+  range: 4
+  cooldown: 90
+
+cesoie:
+  range: 4
+  cooldown: 10
+
+messages:
+  flash_given: "§aHai dato Flash a {player}"
+  flash_received: "§aHai ricevuto Flash"
+  atom_given: "§aHai dato Atom a {player}"
+  atom_received: "§aHai ricevuto Atom"
+  invalid_item: "§cTipo di oggetto PvP non valido."
+  player_not_found: "§cPlayer {player} non trovato o non online."
+  no_permission: "§cNon hai il permesso per usare questo comando."
+  incorrect_usage: "§cUtilizzo: /pvpu <flash|atom> <player>"
+  no_reload_permission: "§cNon hai il permesso di ricaricare il file di configurazione"
+  reload: "§cFile di configurazione ricaricato con successo (si spera)"
+  flash_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Flash nuovamente!"
+  atom_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Atom nuovamente!"
+  build_given: "§aHai dato Anti-Build a {player}"
+  build_received: "§aHai ricevuto AntiBuild"
+  boost_given: "§aHai dato Anti-Boost a {player}"
+  boost_received: "§aHai ricevuto Anti-Boost"
+  cesoie_given: "§aHai dato Cesoie a {player}"
+  cesoie_received: "§aHai ricevuto Cesoie"
+  build_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Anti-Build nuovamente!"
+  boost_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Anti-Boost nuovamente!"
+  pick_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Piccone nuovamente!"
+  cesoie_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Cesoie nuovamente!"
+  noblock: "§cNon puoi piazzare blocchi"
+  noplayer: "§cNessun player trovato nel raggio d'azione"
+  noBow: "§cNon puoi utilizzare l'arco"
+  pick_given: "§aHai dato Piccone a {player}"
+  pick_received: "§aHai ricevuto Piccone!"
+
+
+
+
+items:
+  flash:
+    name: "§b§lFlash"
+    lore:
+      - "§7Tasto Destro per usare!"
+  atom:
+    name: "§6§lAtom"
+    lore:
+      - "§7Tasto Destro per usare!"
+  antibuild:
+    name: "§2§lAnti-Build"
+    lore:
+      - "§7Tasto Destro per usare!"
+  antiboost:
+    name: "§2§lAnti-Boost"
+    lore:
+      - "§7Tasto Destro per usare!"
+  pick:
+    name: "§4§lPiccone"
+    lore:
+      - "§7Tasto Destro per usare!"
