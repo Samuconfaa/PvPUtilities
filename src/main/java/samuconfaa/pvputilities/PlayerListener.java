@@ -85,6 +85,7 @@ public class PlayerListener implements Listener {
 
             CooldownManager.setCooldown(player, "flash", cooldown);
             item.setAmount(item.getAmount() - 1);
+            ItemUsageManager.useItem(player, item);
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "flash");
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
@@ -125,6 +126,7 @@ public class PlayerListener implements Listener {
 
             CooldownManager.setCooldown(player, "atom", cooldown);
             item.setAmount(item.getAmount() - 1);
+            ItemUsageManager.useItem(player, item);
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "atom");
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
@@ -171,6 +173,7 @@ public class PlayerListener implements Listener {
 
                 CooldownManager.setCooldown(player, "boost", cooldown);
                 item.setAmount(item.getAmount() - 1);
+                ItemUsageManager.useItem(player, item);
             } else {
                 // Se non ci sono player nel raggio, o se ne sto guardando due assieme, manda un messaggio al player
                 player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noplayer"));
@@ -219,6 +222,7 @@ public class PlayerListener implements Listener {
                     }
                     CooldownManager.setCooldown(player, "pick", cooldown);
                     item.setAmount(item.getAmount() - 1);
+                    ItemUsageManager.useItem(player, item);
                 } else {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                     player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noObsidian"));
@@ -268,6 +272,7 @@ public class PlayerListener implements Listener {
                     }
                     CooldownManager.setCooldown(player, "cesoie", cooldown);
                     item.setAmount(item.getAmount() - 1);
+                    ItemUsageManager.useItem(player, item);
                 } else {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                     player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noCobweb"));

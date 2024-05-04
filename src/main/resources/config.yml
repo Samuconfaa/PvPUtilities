@@ -62,19 +62,24 @@ items:
     name: "§b§lFlash"
     lore:
       - "§7Tasto Destro per usare!"
+    max_uses: 2
   atom:
     name: "§6§lAtom"
     lore:
       - "§7Tasto Destro per usare!"
+    max_uses: 2
   antiboost:
     name: "§2§lAnti-Boost"
     lore:
       - "§7Tasto Destro per usare!"
+    max_uses: 2
   pick:
     name: "§4§lPiccone"
     lore:
       - "§7Tasto Destro per usare!"
+    max_uses: 2
   cesoie:
     name: "§6§lCesoie"
     lore:
       - "§7Tasto Destro per usare!"
+    max_uses: 2

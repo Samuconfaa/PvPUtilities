@@ -19,6 +19,9 @@ public class ItemManager {
         meta.setDisplayName(ConfigurationManager.getFlashItemName("items.flash.name"));
         meta.setLore(ConfigurationManager.getFlashItemLore("items.flash.lore"));
         item.setItemMeta(meta);
+        int maxUses = ConfigurationManager.getMaxItemUses("flash");
+        ItemUsageManager.setMaxUses("Flash", maxUses);
+
         return item;
     }
 
@@ -28,6 +31,8 @@ public class ItemManager {
         meta.setDisplayName(ConfigurationManager.getAtomItemName("items.atom.name"));
         meta.setLore(ConfigurationManager.getAtomItemLore("items.atom.lore"));
         item.setItemMeta(meta);
+        int maxUses = ConfigurationManager.getMaxItemUses("atom");
+        ItemUsageManager.setMaxUses("Atom", maxUses);
         return item;
     }
 
@@ -39,6 +44,8 @@ public class ItemManager {
         meta.setDisplayName(ConfigurationManager.getAntiBoostItemName("items.antiboost.name"));
         meta.setLore(ConfigurationManager.getAntiBoostLore("items.antiboost.lore"));
         item.setItemMeta(meta);
+        int maxUses = ConfigurationManager.getMaxItemUses("antiboost");
+        ItemUsageManager.setMaxUses("Antiboost", maxUses);
         return item;
     }
 
@@ -48,6 +55,8 @@ public class ItemManager {
         meta.setDisplayName(ConfigurationManager.getPickItemName("items.pick.name"));
         meta.setLore(ConfigurationManager.getPickLore("items.pick.lore"));
         item.setItemMeta(meta);
+        int maxUses = ConfigurationManager.getMaxItemUses("pick");
+        ItemUsageManager.setMaxUses("Pick", maxUses);
         return item;
     }
 
@@ -58,6 +67,8 @@ public class ItemManager {
         meta.setDisplayName(ConfigurationManager.getCesoieItemName("items.cesoie.name"));
         meta.setLore(ConfigurationManager.getCesoieLore("items.cesoie.lore"));
         item.setItemMeta(meta);
+        int maxUses = ConfigurationManager.getMaxItemUses("cesoie");
+        ItemUsageManager.setMaxUses("Cesoie", maxUses);
         return item;
     }
 

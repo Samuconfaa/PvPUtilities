@@ -135,6 +135,10 @@ public class ConfigurationManager {
         return config.getInt("pick.range", 20);
     }
 
+    public static int getMaxItemUses(String itemName) {
+        return config.getInt("items." + itemName + ".max_uses", 1);
+    }
+
 
 
     public static List<String> getPickLore(String s) {
