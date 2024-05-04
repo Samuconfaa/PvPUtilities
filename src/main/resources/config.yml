@@ -18,6 +18,11 @@ boost:
   range: 20
   playercooldown: 10
 
+squid:
+  cooldown: 90
+  range: 20
+  playercooldown: 10
+
 pick:
   range: 4
   cooldown: 90
@@ -49,8 +54,11 @@ messages:
   noblock: "§cNon puoi piazzare blocchi"
   noplayer: "§cNessun player trovato nel raggio d'azione"
   noBow: "§cNon puoi utilizzare l'arco"
+  cecità: "§1Sei stato reso ceco"
   pick_given: "§aHai dato Piccone a {player}"
   pick_received: "§aHai ricevuto Piccone!"
+  squid_given: "§aHai dato Squid a {player}"
+  squid_received: "§aHai ricevuto Squid!"
   noObsidian: "§cNon stai guardando nessun blocco di ossidiana!"
   noCobweb: "§cNon stai guardando nessuna ragnatela!"
 
@@ -62,24 +70,28 @@ items:
     name: "§b§lFlash"
     lore:
       - "§7Tasto Destro per usare!"
-    max_uses: 2
+
   atom:
     name: "§6§lAtom"
     lore:
       - "§7Tasto Destro per usare!"
-    max_uses: 2
+
   antiboost:
     name: "§2§lAnti-Boost"
     lore:
       - "§7Tasto Destro per usare!"
-    max_uses: 2
+
   pick:
     name: "§4§lPiccone"
     lore:
       - "§7Tasto Destro per usare!"
-    max_uses: 2
+
   cesoie:
     name: "§6§lCesoie"
     lore:
       - "§7Tasto Destro per usare!"
-    max_uses: 2
+
+  squid:
+    name: "§1§lSquid"
+    lore:
+      - "§7Tasto Destro per usare!"

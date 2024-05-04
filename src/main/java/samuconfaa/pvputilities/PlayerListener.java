@@ -21,8 +21,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashSet;
 import java.util.Set;
 
-import static samuconfaa.pvputilities.ItemManager.createCesoieItem;
-import static samuconfaa.pvputilities.ItemManager.createPickItem;
+import static samuconfaa.pvputilities.ItemManager.*;
 
 public class PlayerListener implements Listener {
 
@@ -59,7 +58,9 @@ public class PlayerListener implements Listener {
             } else if (event.getItem().isSimilar(createPickItem())) {
                 handlePick(event);
             } else if (event.getItem().isSimilar(createCesoieItem())) {
-                handleCesoie(event);}
+                handleCesoie(event);
+            } else if (event.getItem().isSimilar(createSquidItem())) {
+                handleSquid(event);}
         }
 
         // Aggiungi l'interazione alla lista degli eventi gestiti
@@ -85,7 +86,6 @@ public class PlayerListener implements Listener {
 
             CooldownManager.setCooldown(player, "flash", cooldown);
             item.setAmount(item.getAmount() - 1);
-            ItemUsageManager.useItem(player, item);
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "flash");
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
@@ -126,7 +126,6 @@ public class PlayerListener implements Listener {
 
             CooldownManager.setCooldown(player, "atom", cooldown);
             item.setAmount(item.getAmount() - 1);
-            ItemUsageManager.useItem(player, item);
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "atom");
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
@@ -173,7 +172,6 @@ public class PlayerListener implements Listener {
 
                 CooldownManager.setCooldown(player, "boost", cooldown);
                 item.setAmount(item.getAmount() - 1);
-                ItemUsageManager.useItem(player, item);
             } else {
                 // Se non ci sono player nel raggio, o se ne sto guardando due assieme, manda un messaggio al player
                 player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noplayer"));
@@ -181,6 +179,59 @@ public class PlayerListener implements Listener {
             }
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "boost");
+            int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
+        }
+
+
+
+    }
+
+    private void handleSquid(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        ItemStack item = event.getItem();
+
+        int cooldownPlayer = PvPUtilities.getInstance().getConfigManager().getSquidPlayerCooldown();
+        if (CooldownManager.canUse(player, "squid")) {
+            int cooldown = PvPUtilities.getInstance().getConfigManager().getSquidCooldown();
+
+            int range = PvPUtilities.getInstance().getConfigManager().getSquidRange();
+
+            boolean playerFound = false;
+            Player targetPlayer = null;
+
+            for (Entity entity : player.getNearbyEntities(range, range, range)) {
+                if (entity instanceof Player && !entity.equals(player)) {
+                    playerFound = true;
+                    targetPlayer = (Player) entity;
+                    break;
+                }
+            }
+
+            if (playerFound) {
+                // Impedisce al player target di usare l'arco per il tempo specificato
+                targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, cooldown * 20, 255));
+
+                // Avvia il countdown del cooldown
+                Player finalTargetPlayer = targetPlayer;
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    // Rimuove l'effetto di non poter usare l'arco
+                    finalTargetPlayer.removePotionEffect(PotionEffectType.BLINDNESS);
+                }, cooldownPlayer * 20);
+
+                // Mandare un messaggio al player
+                targetPlayer.sendMessage(ConfigurationManager.getMessage(plugin,"messages.cecità"));
+
+                CooldownManager.setCooldown(player, "squid", cooldown);
+                item.setAmount(item.getAmount() - 1);
+            } else {
+                // Se non ci sono player nel raggio, o se ne sto guardando due assieme, manda un messaggio al player
+                player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noplayer"));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            }
+        } else {
+            long remainingCooldown = CooldownManager.getRemainingCooldown(player, "squid");
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
@@ -222,7 +273,6 @@ public class PlayerListener implements Listener {
                     }
                     CooldownManager.setCooldown(player, "pick", cooldown);
                     item.setAmount(item.getAmount() - 1);
-                    ItemUsageManager.useItem(player, item);
                 } else {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                     player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noObsidian"));
@@ -272,7 +322,6 @@ public class PlayerListener implements Listener {
                     }
                     CooldownManager.setCooldown(player, "cesoie", cooldown);
                     item.setAmount(item.getAmount() - 1);
-                    ItemUsageManager.useItem(player, item);
                 } else {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                     player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noCobweb"));

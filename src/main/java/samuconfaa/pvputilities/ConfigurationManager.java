@@ -59,9 +59,16 @@ public class ConfigurationManager {
     public int getBoostPlayerCooldown() {
         return config.getInt("boost.playercooldown", 10);
     }
+    public int getSquidPlayerCooldown() {
+        return config.getInt("squid.playercooldown", 10);
+    }
 
     public int getPickCooldown() {
         return config.getInt("pick.cooldown", 60);
+    }
+
+    public int getSquidCooldown() {
+        return config.getInt("squid.cooldown", 60);
     }
 
     public int getCesoieCooldown() {
@@ -132,12 +139,13 @@ public class ConfigurationManager {
 
 
     public int getPickRange()  {
-        return config.getInt("pick.range", 20);
+        return config.getInt("pick.range", 5);
+    }
+    public int getSquidRange()  {
+        return config.getInt("squid.range", 20);
     }
 
-    public static int getMaxItemUses(String itemName) {
-        return config.getInt("items." + itemName + ".max_uses", 1);
-    }
+
 
 
 
@@ -145,8 +153,15 @@ public class ConfigurationManager {
         return Collections.singletonList(config.getString("items.pick.lore", "§7Tasto Destro per usare!"));
     }
 
+    public static List<String> getSquidLore(String s) {
+        return Collections.singletonList(config.getString("items.squid.lore", "§7Tasto Destro per usare!"));
+    }
+
     public static String getPickItemName(String s) {
         return config.getString("items.pick.name", "§3§lPiccone");
+    }
+    public static String getSquidItemName(String s) {
+        return config.getString("items.squid.name", "§1§lSquid");
     }
 
 

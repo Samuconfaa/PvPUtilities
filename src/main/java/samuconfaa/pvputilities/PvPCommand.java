@@ -61,7 +61,11 @@ public class PvPCommand implements CommandExecutor {
                         } else if (args[0].equalsIgnoreCase("cesoie")) {
                             target.getInventory().addItem(ItemManager.createCesoieItem());
                             sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.cesoie_given").replace("{player}", target.getName()));     //aggiungere al config
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.cesoie_received"));                //aggiungere al config
+                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.cesoie_received"));
+                        } else if (args[0].equalsIgnoreCase("squid")) {
+                            target.getInventory().addItem(ItemManager.createSquidItem());
+                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.squid_given").replace("{player}", target.getName()));
+                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.squid_received"));
                         } else {
                             sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.invalid_item"));
                         }
