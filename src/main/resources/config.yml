@@ -50,6 +50,8 @@ messages:
   atom_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Atom nuovamente!"
   boost_given: "§aHai dato Anti-Boost a {player}"
   boost_received: "§aHai ricevuto Anti-Boost"
+  forza_given: "§aHai dato Forza a {player}"
+  forza_received: "§aHai ricevuto Forza"
   cesoie_given: "§aHai dato Cesoie a {player}"
   cesoie_received: "§aHai ricevuto Cesoie"
   boost_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Anti-Boost nuovamente!"
