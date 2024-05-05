@@ -60,7 +60,9 @@ public class PlayerListener implements Listener {
             } else if (event.getItem().isSimilar(createCesoieItem())) {
                 handleCesoie(event);
             } else if (event.getItem().isSimilar(createSquidItem())) {
-                handleSquid(event);}
+                handleSquid(event);
+            } else if (event.getItem().isSimilar(createForzaItem())) {
+                handleForza(event);   }
         }
 
         // Aggiungi l'interazione alla lista degli eventi gestiti
@@ -183,10 +185,38 @@ public class PlayerListener implements Listener {
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
         }
-
-
-
     }
+    private void handleForza(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        ItemStack item = event.getItem();
+
+        int cooldownPlayer = PvPUtilities.getInstance().getConfigManager().getForzaPlayerCooldown();
+        if (CooldownManager.canUse(player, "forza")) {
+            int cooldown = PvPUtilities.getInstance().getConfigManager().getForzaCooldown();
+
+
+            // Effetto dato al giocatore che esegue l'azione
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, cooldown * 20, 10));
+
+            // Avvia il countdown del cooldown
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                // Rimuove l'effetto
+                    player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+            }, cooldownPlayer * 20);
+
+            // Mandare un messaggio al player
+            player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.forzaricevuta"));
+
+            CooldownManager.setCooldown(player, "forza", cooldown);
+            item.setAmount(item.getAmount() - 1);
+        } else {
+            long remainingCooldown = CooldownManager.getRemainingCooldown(player, "forza");
+            int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
+        }
+    }
+
 
     private void handleSquid(PlayerInteractEvent event){
         Player player = event.getPlayer();

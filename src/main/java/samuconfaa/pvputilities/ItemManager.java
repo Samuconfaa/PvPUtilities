@@ -78,5 +78,16 @@ public class ItemManager {
     }
 
 
+    public static ItemStack createForzaItem() {
+        ItemStack item = new ItemStack(Material.WOOD_SWORD);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ConfigurationManager.getForzaItemName("items.forza.name"));
+        meta.setLore(ConfigurationManager.getForzaLore("items.forza.lore"));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+
 
 }

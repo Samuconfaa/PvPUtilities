@@ -35,6 +35,10 @@ public class ConfigurationManager {
         return config.getInt("flash.cooldown", 90);
     }
 
+    public int getForzaCooldown() {
+        return config.getInt("forza.cooldown", 90);
+    }
+
     public int getAtomRange() {
         return config.getInt("atom.range", 5);
     }
@@ -58,6 +62,9 @@ public class ConfigurationManager {
 
     public int getBoostPlayerCooldown() {
         return config.getInt("boost.playercooldown", 10);
+    }
+    public int getForzaPlayerCooldown() {
+        return config.getInt("forza.playercooldown", 10);
     }
     public int getSquidPlayerCooldown() {
         return config.getInt("squid.playercooldown", 10);
@@ -157,8 +164,16 @@ public class ConfigurationManager {
         return Collections.singletonList(config.getString("items.squid.lore", "§7Tasto Destro per usare!"));
     }
 
+    public static List<String> getForzaLore(String s) {
+        return Collections.singletonList(config.getString("items.forza.lore", "§7Tasto Destro per usare!"));
+    }
+
     public static String getPickItemName(String s) {
         return config.getString("items.pick.name", "§3§lPiccone");
+    }
+
+    public static String getForzaItemName(String s) {
+        return config.getString("items.forza.name", "§5§lForza");
     }
     public static String getSquidItemName(String s) {
         return config.getString("items.squid.name", "§1§lSquid");

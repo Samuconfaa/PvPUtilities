@@ -23,6 +23,10 @@ squid:
   range: 20
   playercooldown: 10
 
+forza:
+  cooldown: 90
+  playercooldown: 10
+
 pick:
   range: 4
   cooldown: 90
@@ -61,6 +65,7 @@ messages:
   squid_received: "§aHai ricevuto Squid!"
   noObsidian: "§cNon stai guardando nessun blocco di ossidiana!"
   noCobweb: "§cNon stai guardando nessuna ragnatela!"
+  forzaricevuta: "§2Forza applicata correttamente"
 
 
 
@@ -93,5 +98,10 @@ items:
 
   squid:
     name: "§1§lSquid"
+    lore:
+      - "§7Tasto Destro per usare!"
+
+  forza:
+    name: "§5§lForza"
     lore:
       - "§7Tasto Destro per usare!"
