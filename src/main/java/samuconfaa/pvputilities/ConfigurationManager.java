@@ -90,16 +90,16 @@ public class ConfigurationManager {
         return "Messaggio non trovato per " + path;
     }
 
-    public static String getAtomItemName(String s) {
+    public static String getAtomItemName() {
         return config.getString("items.atom.name", "§6§lAtom");
     }
 
-    public static List<String> getAtomItemLore(String s) {
+    public static List<String> getAtomItemLore() {
         return Collections.singletonList(config.getString("items.atom.lore", "§7Tasto Destro per usare!"));
     }
 
 
-    public static String getFlashItemName(String s) {
+    public static String getFlashItemName() {
         return config.getString("items.flash.name", "§b§lFlash");
     }
 
@@ -134,11 +134,11 @@ public class ConfigurationManager {
 
 
 
-    public static String getAntiBoostItemName(String s) {
+    public static String getAntiBoostItemName() {
         return config.getString("items.antiboost.name", "§2§lAnti-Boost");
     }
 
-    public static List<String> getAntiBoostLore(String s) {
+    public static List<String> getAntiBoostLore() {
         return Collections.singletonList(config.getString("items.antiboost.lore", "§7Tasto Destro per usare!"));
     }
 

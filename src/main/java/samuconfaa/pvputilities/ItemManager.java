@@ -16,7 +16,7 @@ public class ItemManager {
     public static ItemStack createFlashItem() {
         ItemStack item = new ItemStack(Material.FEATHER);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ConfigurationManager.getFlashItemName("items.flash.name"));
+        meta.setDisplayName(ConfigurationManager.getFlashItemName());
         meta.setLore(ConfigurationManager.getFlashItemLore("items.flash.lore"));
         item.setItemMeta(meta);
 
@@ -27,8 +27,8 @@ public class ItemManager {
     public static ItemStack createAtomItem() {
         ItemStack item = new ItemStack(Material.BLAZE_ROD);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ConfigurationManager.getAtomItemName("items.atom.name"));
-        meta.setLore(ConfigurationManager.getAtomItemLore("items.atom.lore"));
+        meta.setDisplayName(ConfigurationManager.getAtomItemName());
+        meta.setLore(ConfigurationManager.getAtomItemLore());
         item.setItemMeta(meta);
 
         return item;
@@ -39,7 +39,7 @@ public class ItemManager {
     public static ItemStack createAntiBoostItem() {
         ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ConfigurationManager.getAntiBoostItemName("items.antiboost.name"));
+        meta.setDisplayName(ConfigurationManager.getAntiBoostItemName());
         meta.setLore(ConfigurationManager.getAntiBoostLore("items.antiboost.lore"));
         item.setItemMeta(meta);
 

@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.Sound;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,6 +20,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static samuconfaa.pvputilities.ItemManager.*;
@@ -35,43 +37,13 @@ public class PlayerListener implements Listener {
         this.handledInteractions = new HashSet<>();
     }
 
-
-
-
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        String interactionKey = player.getName() + ":" + event.getAction().name() + ":" + event.getHand().name();
-
-        // Verifica se l'interazione è già stata gestita
-        if (handledInteractions.contains(interactionKey)) {
-            return;
-        }
-
-        if (event.getItem() != null) {
-            if (event.getItem().isSimilar(ItemManager.createFlashItem())) {
-                handleFlash(event);
-            } else if (event.getItem().isSimilar(ItemManager.createAtomItem())) {
-                handleAtom(event);
-            } else if (event.getItem().isSimilar(ItemManager.createAntiBoostItem())) {
-                handleBoost(event);
-            } else if (event.getItem().isSimilar(createPickItem())) {
-                handlePick(event);
-            } else if (event.getItem().isSimilar(createCesoieItem())) {
-                handleCesoie(event);
-            } else if (event.getItem().isSimilar(createSquidItem())) {
-                handleSquid(event);
-            } else if (event.getItem().isSimilar(createForzaItem())) {
-                handleForza(event);   }
-        }
-
-        // Aggiungi l'interazione alla lista degli eventi gestiti
-        handledInteractions.add(interactionKey);
-
-        // Pulisci la lista degli eventi gestiti dopo un certo periodo di tempo
-        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            handledInteractions.remove(interactionKey);
-        }, 5); // 5 ticks (0.25 secondi) di ritardo prima di rimuovere l'evento dalla lista
+    public void onRightClick(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
+        Player p = e.getPlayer();
+        ItemStack i = p.getItemInHand();
+        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getAtomItemName())) handleAtom(p, i);
+        //if (i.getItemMeta().getDisplayName() == "Nigga") handleNigga(p, i);
     }
 
     private void handleFlash(PlayerInteractEvent event) {
@@ -95,9 +67,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    private void handleAtom(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+    private void handleAtom(Player player, ItemStack item) {
 
         if (CooldownManager.canUse(player, "atom")) {
             int range = PvPUtilities.getInstance().getConfigManager().getAtomRange();
