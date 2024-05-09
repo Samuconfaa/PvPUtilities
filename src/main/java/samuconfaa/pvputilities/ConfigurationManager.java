@@ -156,35 +156,35 @@ public class ConfigurationManager {
 
 
 
-    public static List<String> getPickLore(String s) {
+    public static List<String> getPickLore() {
         return Collections.singletonList(config.getString("items.pick.lore", "§7Tasto Destro per usare!"));
     }
 
-    public static List<String> getSquidLore(String s) {
+    public static List<String> getSquidLore() {
         return Collections.singletonList(config.getString("items.squid.lore", "§7Tasto Destro per usare!"));
     }
 
-    public static List<String> getForzaLore(String s) {
+    public static List<String> getForzaLore() {
         return Collections.singletonList(config.getString("items.forza.lore", "§7Tasto Destro per usare!"));
     }
 
-    public static String getPickItemName(String s) {
+    public static String getPickItemName() {
         return config.getString("items.pick.name", "§3§lPiccone");
     }
 
-    public static String getForzaItemName(String s) {
+    public static String getForzaItemName() {
         return config.getString("items.forza.name", "§5§lForza");
     }
-    public static String getSquidItemName(String s) {
+    public static String getSquidItemName() {
         return config.getString("items.squid.name", "§1§lSquid");
     }
 
 
-    public static String getCesoieItemName(String s) {                      //aggiungere al config
+    public static String getCesoieItemName() {                      //aggiungere al config
         return config.getString("items.cesoie.name", "§6§lCesoie");
     }
 
-    public static List<String> getCesoieLore(String s) {                    //aggiungere al config
+    public static List<String> getCesoieLore() {                    //aggiungere al config
         return Collections.singletonList(config.getString("items.cesoie.lore", "§7Tasto Destro per usare!"));
     }
 

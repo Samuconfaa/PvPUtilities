@@ -43,12 +43,16 @@ public class PlayerListener implements Listener {
         Player p = e.getPlayer();
         ItemStack i = p.getItemInHand();
         if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getAtomItemName())) handleAtom(p, i);
-        //if (i.getItemMeta().getDisplayName() == "Nigga") handleNigga(p, i);
+        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getFlashItemName())) handleFlash(p, i);
+        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getForzaItemName())) handleForza(p, i);
+        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getPickItemName())) handlePick(p, i, e.getClickedBlock());
+        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getAntiBoostItemName())) handleBoost(p, i);
+        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getCesoieItemName())) handleCesoie(p, i, e.getClickedBlock());
+        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getSquidItemName())) handleSquid(p, i);
+
     }
 
-    private void handleFlash(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+    private void handleFlash(Player player, ItemStack item) {
 
         if (CooldownManager.canUse(player, "flash")) {
             int jumpDistance = PvPUtilities.getInstance().getConfigManager().getFlashJumpDistance();
@@ -107,9 +111,8 @@ public class PlayerListener implements Listener {
     }
 
 
-    private void handleBoost(PlayerInteractEvent event){
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+    private void handleBoost(Player player, ItemStack item){
+
 
         int cooldownPlayer = PvPUtilities.getInstance().getConfigManager().getBoostPlayerCooldown();
         if (CooldownManager.canUse(player, "boost")) {
@@ -156,9 +159,8 @@ public class PlayerListener implements Listener {
             player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
         }
     }
-    private void handleForza(PlayerInteractEvent event){
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+    private void handleForza(Player player, ItemStack item){
+
 
         int cooldownPlayer = PvPUtilities.getInstance().getConfigManager().getForzaPlayerCooldown();
         if (CooldownManager.canUse(player, "forza")) {
@@ -171,7 +173,7 @@ public class PlayerListener implements Listener {
             // Avvia il countdown del cooldown
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 // Rimuove l'effetto
-                    player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+                player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             }, cooldownPlayer * 20);
 
             // Mandare un messaggio al player
@@ -188,9 +190,8 @@ public class PlayerListener implements Listener {
     }
 
 
-    private void handleSquid(PlayerInteractEvent event){
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+    private void handleSquid(Player player, ItemStack item){
+
 
         int cooldownPlayer = PvPUtilities.getInstance().getConfigManager().getSquidPlayerCooldown();
         if (CooldownManager.canUse(player, "squid")) {
@@ -242,9 +243,7 @@ public class PlayerListener implements Listener {
     }
 
 
-    private void handlePick(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+    private void handlePick(Player player, ItemStack item, Block clickedBlock) {
 
         // Controllo se il giocatore ha cliccato con l'oggetto giusto
         if (item != null && item.isSimilar(createPickItem())) { // Verifica se l'oggetto è simile a quello creato
@@ -257,7 +256,7 @@ public class PlayerListener implements Listener {
 
 
                 // Controllo se il blocco su cui ha cliccato è ossidiana
-                Block clickedBlock = event.getClickedBlock();
+
                 if (clickedBlock != null && clickedBlock.getType() == Material.OBSIDIAN) {
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 1.0f, 1.0f);
                     clickedBlock.setType(Material.AIR);
@@ -291,9 +290,8 @@ public class PlayerListener implements Listener {
         }
     }
 
-    private void handleCesoie(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+    private void handleCesoie(Player player, ItemStack item, Block clickedBlock) {
+
 
         // Controllo se il giocatore ha cliccato con l'oggetto giusto
         if (item != null && item.isSimilar(createCesoieItem())) { // Verifica se l'oggetto è simile a quello creato
@@ -305,7 +303,7 @@ public class PlayerListener implements Listener {
 
 
                 // Controllo se il blocco su cui ha cliccato è cobweb
-                Block clickedBlock = event.getClickedBlock();
+
                 if (clickedBlock != null && clickedBlock.getType() == Material.WEB) {
                     clickedBlock.setType(Material.AIR);
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 1.0f, 1.0f);

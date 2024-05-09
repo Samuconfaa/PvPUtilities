@@ -40,7 +40,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getAntiBoostItemName());
-        meta.setLore(ConfigurationManager.getAntiBoostLore("items.antiboost.lore"));
+        meta.setLore(ConfigurationManager.getAntiBoostLore());
         item.setItemMeta(meta);
 
         return item;
@@ -49,8 +49,8 @@ public class ItemManager {
     public static ItemStack createPickItem() {
         ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ConfigurationManager.getPickItemName("items.pick.name"));
-        meta.setLore(ConfigurationManager.getPickLore("items.pick.lore"));
+        meta.setDisplayName(ConfigurationManager.getPickItemName());
+        meta.setLore(ConfigurationManager.getPickLore());
         item.setItemMeta(meta);
 
         return item;
@@ -60,8 +60,8 @@ public class ItemManager {
     public static ItemStack createCesoieItem() {
         ItemStack item = new ItemStack(Material.SHEARS);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ConfigurationManager.getCesoieItemName("items.cesoie.name"));
-        meta.setLore(ConfigurationManager.getCesoieLore("items.cesoie.lore"));
+        meta.setDisplayName(ConfigurationManager.getCesoieItemName());
+        meta.setLore(ConfigurationManager.getCesoieLore());
         item.setItemMeta(meta);
 
         return item;
@@ -70,8 +70,8 @@ public class ItemManager {
     public static ItemStack createSquidItem() {
         ItemStack item = new ItemStack(Material.INK_SACK);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ConfigurationManager.getSquidItemName("items.squid.name"));
-        meta.setLore(ConfigurationManager.getSquidLore("items.squid.lore"));
+        meta.setDisplayName(ConfigurationManager.getSquidItemName());
+        meta.setLore(ConfigurationManager.getSquidLore());
         item.setItemMeta(meta);
 
         return item;
@@ -81,8 +81,8 @@ public class ItemManager {
     public static ItemStack createForzaItem() {
         ItemStack item = new ItemStack(Material.WOOD_SWORD);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ConfigurationManager.getForzaItemName("items.forza.name"));
-        meta.setLore(ConfigurationManager.getForzaLore("items.forza.lore"));
+        meta.setDisplayName(ConfigurationManager.getForzaItemName());
+        meta.setLore(ConfigurationManager.getForzaLore());
         item.setItemMeta(meta);
 
         return item;
