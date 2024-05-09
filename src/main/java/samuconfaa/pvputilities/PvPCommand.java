@@ -1,6 +1,3 @@
-// PVPUtilities by Samuconfaa
-
-//Questo file gestisce i comandi /pvpu e le varie conseguenze
 package samuconfaa.pvputilities;
 
 import org.bukkit.Bukkit;
@@ -21,10 +18,6 @@ public class PvPCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (label.equalsIgnoreCase("pvpu")) {
-            if (!(sender instanceof Player) || !(sender.hasPermission("pvpu.pvp"))){
-                sender.sendMessage("§4PvPUtilities Custum Items by Samuconfaa");
-                return true;
-            }
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("pvpu.reload")) {
                     plugin.reloadConfig();
@@ -32,58 +25,51 @@ public class PvPCommand implements CommandExecutor {
                 } else {
                     sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.no_reload_permission"));
                 }
-
                 return true;
-            } else if (args.length == 2) {
-                if (!(sender instanceof Player) || !(sender.hasPermission("pvpu.pvp"))){
-                    sender.sendMessage("§4PvPUtilities Custum Items by Samuconfaa");
-                    return true;
-                }
-                if (!(sender instanceof Player) || sender.hasPermission("pvpu.pvp")) {
-                    Player target = Bukkit.getPlayer(args[1]);
-                    if (target != null) {
-                        if (args[0].equalsIgnoreCase("flash")) {
-                            target.getInventory().addItem(ItemManager.createFlashItem());
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.flash_given").replace("{player}", target.getName()));
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.flash_received"));
-                        } else if (args[0].equalsIgnoreCase("atom")) {
-                            target.getInventory().addItem(ItemManager.createAtomItem());
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_given").replace("{player}", target.getName()));
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_received"));
-                        } else if(args[0].equalsIgnoreCase("boost"))    {
-                            target.getInventory().addItem(ItemManager.createAntiBoostItem());
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_given").replace("{player}", target.getName()));
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_received"));
-                        } else if(args[0].equalsIgnoreCase("pick"))    {
-                            target.getInventory().addItem(ItemManager.createPickItem());
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_given").replace("{player}", target.getName()));
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_received"));
-                        } else if (args[0].equalsIgnoreCase("cesoie")) {
-                            target.getInventory().addItem(ItemManager.createCesoieItem());
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.cesoie_given").replace("{player}", target.getName()));     //aggiungere al config
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.cesoie_received"));
-                        } else if (args[0].equalsIgnoreCase("squid")) {
-                            target.getInventory().addItem(ItemManager.createSquidItem());
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.squid_given").replace("{player}", target.getName()));
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.squid_received"));
-                        } else if (args[0].equalsIgnoreCase("forza")) {
-                            target.getInventory().addItem(ItemManager.createForzaItem());
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.forza_given").replace("{player}", target.getName()));
-                            target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.forza_received"));
-                        } else {
-                            sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.invalid_item"));
-                        }
+            } else if (args.length == 2 && sender.hasPermission("pvpu.pvp")) {
+                Player target = Bukkit.getPlayer(args[1]);
+                if (target != null) {
+                    if (args[0].equalsIgnoreCase("flash")) {
+                        target.getInventory().addItem(ItemManager.createFlashItem());
+                        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.flash_given").replace("{player}", target.getName()));
+                        target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.flash_received"));
+                    } else if (args[0].equalsIgnoreCase("atom")) {
+                        target.getInventory().addItem(ItemManager.createAtomItem());
+                        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_given").replace("{player}", target.getName()));
+                        target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_received"));
+                    } else if(args[0].equalsIgnoreCase("boost"))    {
+                        target.getInventory().addItem(ItemManager.createAntiBoostItem());
+                        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_given").replace("{player}", target.getName()));
+                        target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_received"));
+                    } else if(args[0].equalsIgnoreCase("pick"))    {
+                        target.getInventory().addItem(ItemManager.createPickItem());
+                        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_given").replace("{player}", target.getName()));
+                        target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_received"));
+                    } else if (args[0].equalsIgnoreCase("cesoie")) {
+                        target.getInventory().addItem(ItemManager.createCesoieItem());
+                        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.cesoie_given").replace("{player}", target.getName()));     //aggiungere al config
+                        target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.cesoie_received"));
+                    } else if (args[0].equalsIgnoreCase("squid")) {
+                        target.getInventory().addItem(ItemManager.createSquidItem());
+                        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.squid_given").replace("{player}", target.getName()));
+                        target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.squid_received"));
+                    } else if (args[0].equalsIgnoreCase("forza")) {
+                        target.getInventory().addItem(ItemManager.createForzaItem());
+                        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.forza_given").replace("{player}", target.getName()));
+                        target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.forza_received"));
                     } else {
-                        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.player_not_found").replace("{player}", args[1]));
+                        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.invalid_item"));
                     }
-                    return true;
                 } else {
-                    sender.sendMessage("§4PvPUtilities Custom Items by Samuconfaa");
-                    return true;
+                    sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.player_not_found").replace("{player}", args[1]));
                 }
-            } else if (sender.hasPermission("pvpu.pvp")) {
-                sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.incorrect_usage"));
-                return  true;
+                return true;
+            } else if (sender instanceof Player && !sender.hasPermission("pvpu.pvp")) {
+                sender.sendMessage("§4PvPUtilities Custom Items by Samuconfaa");
+                return true;
+            } else {
+                sender.sendMessage("§4PvPUtilities Custom Items by Samuconfaa");
+                return true;
             }
         }
         return false;
