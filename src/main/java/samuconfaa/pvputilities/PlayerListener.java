@@ -15,13 +15,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static samuconfaa.pvputilities.ItemManager.*;
 
@@ -29,6 +30,8 @@ public class PlayerListener implements Listener {
 
     private PvPUtilities plugin;
     private Set<String> handledInteractions;
+    private final long rightClickDelay = 250;
+    private final Map<String, Long> lastRightClickTimes = new HashMap<>();
 
     public PlayerListener(PvPUtilities plugin) {
         this.plugin = plugin;
@@ -40,30 +43,92 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
-        Player p = e.getPlayer();
-        ItemStack i = p.getItemInHand();
-        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getAtomItemName())) handleAtom(p, i);
-        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getFlashItemName())) handleFlash(p, i);
-        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getForzaItemName())) handleForza(p, i);
-        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getPickItemName())) handlePick(p, i, e.getClickedBlock());
-        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getAntiBoostItemName())) handleBoost(p, i);
-        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getCesoieItemName())) handleCesoie(p, i, e.getClickedBlock());
-        if (Objects.equals(i.getItemMeta().getDisplayName(), ConfigurationManager.getSquidItemName())) handleSquid(p, i);
+        Player player = e.getPlayer();
+        String playerName = player.getName();
 
+        // Controllo del cooldown per il tasto destro
+        if (lastRightClickTimes.containsKey(playerName)) {
+            long lastRightClickTime = lastRightClickTimes.get(playerName);
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastRightClickTime < rightClickDelay) {
+                // Se è passato meno del tempo di ritardo, non fare nulla
+                return;
+            }
+        }
+
+        // Se il giocatore può fare un altro clic destro, esegui le azioni associate
+        ItemStack item = player.getItemInHand();
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return; // Verifica se l'oggetto ha un meta associato
+        String displayName = meta.getDisplayName();
+        if (displayName == null) return; // Verifica se il nome visualizzato non è nullo
+
+        if (Objects.equals(displayName, ConfigurationManager.getAtomItemName())) handleAtom(player, item);
+        if (Objects.equals(displayName, ConfigurationManager.getFlashItemName())) handleFlash(player, item);
+        if (Objects.equals(displayName, ConfigurationManager.getForzaItemName())) handleForza(player, item);
+        if (Objects.equals(displayName, ConfigurationManager.getPickItemName())) handlePick(player, item, e.getClickedBlock());
+        if (Objects.equals(displayName, ConfigurationManager.getAntiBoostItemName())) handleBoost(player, item);
+        if (Objects.equals(displayName, ConfigurationManager.getCesoieItemName())) handleCesoie(player, item, e.getClickedBlock());
+        if (Objects.equals(displayName, ConfigurationManager.getSquidItemName())) handleSquid(player, item);
+
+        // Aggiorna il tempo dell'ultimo clic destro
+        lastRightClickTimes.put(playerName, System.currentTimeMillis());
     }
 
-    private void handleFlash(Player player, ItemStack item) {
+    private boolean removeItemFromPlayer(Player player, ItemStack item) {
+        for (int i = 0; i < player.getInventory().getSize(); i++) {
+            ItemStack slotItem = player.getInventory().getItem(i);
+            if (slotItem != null && slotItem.isSimilar(item)) {
+                int amountToRemove = 1; // Puoi modificare la quantità da rimuovere se necessario
+                if (slotItem.getAmount() > amountToRemove) {
+                    slotItem.setAmount(slotItem.getAmount() - amountToRemove);
+                    return true; // Rimozione riuscita
+                } else {
+                    player.getInventory().clear(i); // Rimuovi completamente l'oggetto dallo slot
+                    return true; // Rimozione riuscita
+                }
+            }
+        }
+        return false; // L'oggetto non è stato trovato nell'inventario del giocatore
+    }
 
+
+    private void handleFlash(Player player, ItemStack item) {
         if (CooldownManager.canUse(player, "flash")) {
             int jumpDistance = PvPUtilities.getInstance().getConfigManager().getFlashJumpDistance();
             int effectDuration = PvPUtilities.getInstance().getConfigManager().getFlashEffectDuration();
             int cooldown = PvPUtilities.getInstance().getConfigManager().getFlashCooldown();
+            int increments = 10; // Numero di incrementi per raggiungere la velocità massima
+            double maxVelocity = 3.0; // Velocità massima sicura
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, effectDuration * 20, 5));
-            player.setVelocity(player.getLocation().getDirection().multiply(jumpDistance));
+            Vector direction = player.getLocation().getDirection().normalize();
+
+            new BukkitRunnable() {
+                int currentIncrement = 0;
+
+                @Override
+                public void run() {
+                    if (currentIncrement >= increments) {
+                        // Impedisce al giocatore di prendere danni da caduta per 10 secondi dopo l'utilizzo
+                        player.setNoDamageTicks(10 * 20); // 10 secondi in ticks
+                        this.cancel();
+                    } else {
+                        // Calcola il fattore di moltiplicazione per l'incremento attuale
+                        double factor = (double) (currentIncrement + 1) / increments;
+                        Vector incrementalVelocity = direction.clone().multiply(jumpDistance * factor);
+                        // Verifica che la velocità non superi il massimo consentito
+                        if (incrementalVelocity.length() > maxVelocity) {
+                            incrementalVelocity.normalize().multiply(maxVelocity);
+                        }
+                        player.setVelocity(incrementalVelocity);
+                        currentIncrement++;
+                    }
+                }
+            }.runTaskTimer(plugin, 0L, 2L); // Esegui ogni 2 tick per un aumento più fluido
 
             CooldownManager.setCooldown(player, "flash", cooldown);
-            item.setAmount(item.getAmount() - 1);
+            removeItemFromPlayer(player, item);
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "flash");
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
@@ -71,15 +136,18 @@ public class PlayerListener implements Listener {
         }
     }
 
+
+
+
+
     private void handleAtom(Player player, ItemStack item) {
 
         if (CooldownManager.canUse(player, "atom")) {
             int range = PvPUtilities.getInstance().getConfigManager().getAtomRange();
             int cooldown = PvPUtilities.getInstance().getConfigManager().getAtomCooldown();
 
-            player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f);
 
-            player.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, player.getLocation(), 100, 0.5, 0.5, 0.5, 1);
+
 
 
             for (int x = -range; x <= range; x++) {
@@ -101,10 +169,10 @@ public class PlayerListener implements Listener {
             }
 
             CooldownManager.setCooldown(player, "atom", cooldown);
-            item.setAmount(item.getAmount() - 1);
+            removeItemFromPlayer(player, item);
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "atom");
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
             player.sendMessage(ConfigurationManager.getAtomCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
         }
@@ -146,16 +214,16 @@ public class PlayerListener implements Listener {
                 targetPlayer.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noBow"));
 
                 CooldownManager.setCooldown(player, "boost", cooldown);
-                item.setAmount(item.getAmount() - 1);
+                removeItemFromPlayer(player, item);
             } else {
                 // Se non ci sono player nel raggio, o se ne sto guardando due assieme, manda un messaggio al player
                 player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noplayer"));
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
             }
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "boost");
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
             player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
         }
     }
@@ -180,11 +248,11 @@ public class PlayerListener implements Listener {
             player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.forzaricevuta"));
 
             CooldownManager.setCooldown(player, "forza", cooldown);
-            item.setAmount(item.getAmount() - 1);
+            removeItemFromPlayer(player, item);
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "forza");
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
             player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
         }
     }
@@ -225,16 +293,16 @@ public class PlayerListener implements Listener {
                 targetPlayer.sendMessage(ConfigurationManager.getMessage(plugin,"messages.cecità"));
 
                 CooldownManager.setCooldown(player, "squid", cooldown);
-                item.setAmount(item.getAmount() - 1);
+                removeItemFromPlayer(player, item);
             } else {
                 // Se non ci sono player nel raggio, o se ne sto guardando due assieme, manda un messaggio al player
                 player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noplayer"));
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
             }
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "squid");
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
             player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
         }
 
@@ -258,7 +326,7 @@ public class PlayerListener implements Listener {
                 // Controllo se il blocco su cui ha cliccato è ossidiana
 
                 if (clickedBlock != null && clickedBlock.getType() == Material.OBSIDIAN) {
-                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 1.0f, 1.0f);
+
                     clickedBlock.setType(Material.AIR);
                     for (int x = -range; x <= range; x++) {
                         for (int y = -range; y <= range; y++) {
@@ -271,9 +339,9 @@ public class PlayerListener implements Listener {
                         }
                     }
                     CooldownManager.setCooldown(player, "pick", cooldown);
-                    item.setAmount(item.getAmount() - 1);
+                    removeItemFromPlayer(player, item);
                 } else {
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
                     player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noObsidian"));
                 }
 
@@ -282,7 +350,7 @@ public class PlayerListener implements Listener {
 
             } else {
                 long remainingCooldown = CooldownManager.getRemainingCooldown(player, "pick");
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
                 int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
                 player.sendMessage(ConfigurationManager.getPickCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
             }
@@ -306,7 +374,7 @@ public class PlayerListener implements Listener {
 
                 if (clickedBlock != null && clickedBlock.getType() == Material.WEB) {
                     clickedBlock.setType(Material.AIR);
-                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 1.0f, 1.0f);
+
 
                     for (int x = -range; x <= range; x++) {
                         for (int y = -range; y <= range; y++) {
@@ -319,9 +387,9 @@ public class PlayerListener implements Listener {
                         }
                     }
                     CooldownManager.setCooldown(player, "cesoie", cooldown);
-                    item.setAmount(item.getAmount() - 1);
+                    removeItemFromPlayer(player, item);
                 } else {
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
                     player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noCobweb"));
                 }
 
@@ -331,15 +399,13 @@ public class PlayerListener implements Listener {
             } else {
                 long remainingCooldown = CooldownManager.getRemainingCooldown(player, "cesoie");
                 int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+
                 player.sendMessage(ConfigurationManager.getCesoieCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
             }
 
         }
     }
 
-
-
-
-
 }
+
+

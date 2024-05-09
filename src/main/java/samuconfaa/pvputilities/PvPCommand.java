@@ -67,7 +67,7 @@ public class PvPCommand implements CommandExecutor {
                             sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.squid_given").replace("{player}", target.getName()));
                             target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.squid_received"));
                         } else if (args[0].equalsIgnoreCase("forza")) {
-                            target.getInventory().addItem(ItemManager.createSquidItem());
+                            target.getInventory().addItem(ItemManager.createForzaItem());
                             sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.forza_given").replace("{player}", target.getName()));
                             target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.forza_received"));
                         } else {
@@ -78,7 +78,7 @@ public class PvPCommand implements CommandExecutor {
                     }
                     return true;
                 } else {
-                    sender.sendMessage("§4PvPUtilities Custum Items by Samuconfaa");
+                    sender.sendMessage("§4PvPUtilities Custom Items by Samuconfaa");
                     return true;
                 }
             } else if (sender.hasPermission("pvpu.pvp")) {

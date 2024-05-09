@@ -79,7 +79,7 @@ public class ItemManager {
 
 
     public static ItemStack createForzaItem() {
-        ItemStack item = new ItemStack(Material.WOOD_SWORD);
+        ItemStack item = new ItemStack(Material.IRON_INGOT);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getForzaItemName());
         meta.setLore(ConfigurationManager.getForzaLore());
