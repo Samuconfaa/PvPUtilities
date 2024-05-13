@@ -7,9 +7,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class PvPCommand implements CommandExecutor {
 
     private final PvPUtilities plugin;
+    public static Set<Player> builders = new HashSet<>();
 
     public PvPCommand(PvPUtilities plugin) {
         this.plugin = plugin;
@@ -37,11 +41,11 @@ public class PvPCommand implements CommandExecutor {
                         target.getInventory().addItem(ItemManager.createAtomItem());
                         sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_given").replace("{player}", target.getName()));
                         target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_received"));
-                    } else if(args[0].equalsIgnoreCase("boost"))    {
+                    } else if (args[0].equalsIgnoreCase("boost")) {
                         target.getInventory().addItem(ItemManager.createAntiBoostItem());
                         sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_given").replace("{player}", target.getName()));
                         target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_received"));
-                    } else if(args[0].equalsIgnoreCase("pick"))    {
+                    } else if (args[0].equalsIgnoreCase("pick")) {
                         target.getInventory().addItem(ItemManager.createPickItem());
                         sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_given").replace("{player}", target.getName()));
                         target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_received"));
@@ -64,7 +68,18 @@ public class PvPCommand implements CommandExecutor {
                     sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.player_not_found").replace("{player}", args[1]));
                 }
                 return true;
-            } else if (sender instanceof Player && !sender.hasPermission("pvpu.pvp")) {
+            } else if (args[0].equalsIgnoreCase("build") && sender instanceof Player) {
+
+            Player player = (Player) sender;
+            if (builders.contains(player)) {
+                builders.remove(player);
+                sender.sendMessage("buildmode disattivata");
+            }
+
+            builders.add(player);
+            sender.sendMessage("buildmode attivata");
+
+        } else if (sender instanceof Player && !sender.hasPermission("pvpu.pvp")) {
                 sender.sendMessage("§4PvPUtilities Custom Items by Samuconfaa");
                 return true;
             } else {

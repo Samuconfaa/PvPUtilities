@@ -107,3 +107,5 @@ items:
     name: "§5§lForza"
     lore:
       - "§7Tasto Destro per usare!"
+
+block-list:

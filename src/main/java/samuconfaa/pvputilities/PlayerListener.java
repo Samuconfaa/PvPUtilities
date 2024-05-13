@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.Sound;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -25,6 +26,8 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 import static samuconfaa.pvputilities.ItemManager.*;
+import static samuconfaa.pvputilities.LocationSerializationUtil.locationToString;
+import static samuconfaa.pvputilities.PvPCommand.builders;
 
 public class PlayerListener implements Listener {
 
@@ -380,7 +383,7 @@ public class PlayerListener implements Listener {
                         for (int y = -range; y <= range; y++) {
                             for (int z = -range; z <= range; z++) {
                                 Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX() + x, player.getLocation().getBlockY() + y, player.getLocation().getBlockZ() + z);
-                                if (block.getType() == Material.WEB) {
+                                if (block.getType() == Material.WEB && !PvPUtilities.getInstance().getConfig().getStringList("block-list").contains(locationToString(block.getLocation()))) {
                                     block.setType(Material.AIR);
                                 }
                             }
@@ -403,6 +406,16 @@ public class PlayerListener implements Listener {
                 player.sendMessage(ConfigurationManager.getCesoieCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
             }
 
+        }
+    }
+
+    @EventHandler
+    public void onPlace(BlockPlaceEvent e) {
+        Player p = e.getPlayer();
+        if (builders.contains(p)) {
+            String locString = locationToString(e.getBlock().getLocation());
+            PvPUtilities.getInstance().getConfig().getStringList("block-list").add(locString);
+            p.sendMessage("Blocco piazzato in buildmode");
         }
     }
 
