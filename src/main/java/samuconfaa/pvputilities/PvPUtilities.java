@@ -1,6 +1,5 @@
-// PVPUtilities by Samuconfaa
+// PvPUtilities.java
 
-//Questo file è la main class del progetto
 package samuconfaa.pvputilities;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,11 +16,7 @@ public class PvPUtilities extends JavaPlugin {
         configManager.loadConfig();
         getCommand("pvpu").setExecutor(new PvPCommand(this));
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-
     }
-
-
-
 
     public static PvPUtilities getInstance() {
         return instance;

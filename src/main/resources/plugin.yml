@@ -1,5 +1,5 @@
 name: PvPUtilities
-version: 1.3
+version: 1.7
 description: Un plugin per item custom nel kitpvp
 author: Samuconfaa
 main: samuconfaa.pvputilities.PvPUtilities
@@ -10,12 +10,18 @@ commands:
   reload:
     description: Ricarica il file di configurazione.
     usage: /pvpu reload
+  setblock:
+    description: Salva i blocchi di ossidiana e ragnatele da non rompere.
+    usage: /pvpu setblock
 permissions:
   pvpu.pvp:
     description: Permette l'uso del comando /pvpu.
     default: op
   pvpu.reload:
     description: Permette la ricarica del file di configurazione.
+    default: op
+  pvpu.setblock:
+    description: Permette l'uso di pvpu setblock.
     default: op
 
 

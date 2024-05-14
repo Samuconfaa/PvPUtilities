@@ -35,6 +35,9 @@ cesoie:
   range: 4
   cooldown: 10
 
+setblock:
+  range: 150
+
 messages:
   flash_given: "§aHai dato Flash a {player}"
   flash_received: "§aHai ricevuto Flash"
@@ -68,6 +71,7 @@ messages:
   noObsidian: "§cNon stai guardando nessun blocco di ossidiana!"
   noCobweb: "§cNon stai guardando nessuna ragnatela!"
   forzaricevuta: "§2Forza applicata correttamente"
+  block_saved: "§2Blocchi salvati!"
 
 
 
@@ -108,4 +112,8 @@ items:
     lore:
       - "§7Tasto Destro per usare!"
 
-block-list:
+saved_blocks:
+  obsidian:
+
+  cobweb:
+

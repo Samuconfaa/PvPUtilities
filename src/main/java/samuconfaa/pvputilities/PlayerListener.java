@@ -13,7 +13,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.Sound;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,8 +25,6 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 import static samuconfaa.pvputilities.ItemManager.*;
-import static samuconfaa.pvputilities.LocationSerializationUtil.locationToString;
-import static samuconfaa.pvputilities.PvPCommand.builders;
 
 public class PlayerListener implements Listener {
 
@@ -69,9 +66,11 @@ public class PlayerListener implements Listener {
         if (Objects.equals(displayName, ConfigurationManager.getAtomItemName())) handleAtom(player, item);
         if (Objects.equals(displayName, ConfigurationManager.getFlashItemName())) handleFlash(player, item);
         if (Objects.equals(displayName, ConfigurationManager.getForzaItemName())) handleForza(player, item);
-        if (Objects.equals(displayName, ConfigurationManager.getPickItemName())) handlePick(player, item, e.getClickedBlock());
+        if (Objects.equals(displayName, ConfigurationManager.getPickItemName()))
+            handlePick(player, item, e.getClickedBlock());
         if (Objects.equals(displayName, ConfigurationManager.getAntiBoostItemName())) handleBoost(player, item);
-        if (Objects.equals(displayName, ConfigurationManager.getCesoieItemName())) handleCesoie(player, item, e.getClickedBlock());
+        if (Objects.equals(displayName, ConfigurationManager.getCesoieItemName()))
+            handleCesoie(player, item, e.getClickedBlock());
         if (Objects.equals(displayName, ConfigurationManager.getSquidItemName())) handleSquid(player, item);
 
         // Aggiorna il tempo dell'ultimo clic destro
@@ -140,25 +139,24 @@ public class PlayerListener implements Listener {
     }
 
 
-
-
-
     private void handleAtom(Player player, ItemStack item) {
-
         if (CooldownManager.canUse(player, "atom")) {
             int range = PvPUtilities.getInstance().getConfigManager().getAtomRange();
             int cooldown = PvPUtilities.getInstance().getConfigManager().getAtomCooldown();
 
-
-
-
+            List<String> savedObsidian = PvPUtilities.getInstance().getConfig().getStringList("saved_blocks.obsidian");
+            List<String> savedCobweb = PvPUtilities.getInstance().getConfig().getStringList("saved_blocks.cobweb");
 
             for (int x = -range; x <= range; x++) {
                 for (int y = -range; y <= range; y++) {
                     for (int z = -range; z <= range; z++) {
                         Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX() + x, player.getLocation().getBlockY() + y, player.getLocation().getBlockZ() + z);
-                        if (block.getType() == Material.OBSIDIAN || block.getType() == Material.WEB) {
-                            block.setType(Material.AIR);
+                        String locationString = block.getX() + "_" + block.getY() + "_" + block.getZ();
+                        if (!savedObsidian.contains(locationString) && !savedCobweb.contains(locationString)) {
+                            // Rimuovi solo i blocchi che non sono stati salvati
+                            if (block.getType() == Material.OBSIDIAN || block.getType() == Material.WEB) {
+                                block.setType(Material.AIR);
+                            }
                         }
                     }
                 }
@@ -168,21 +166,19 @@ public class PlayerListener implements Listener {
                 if (entity instanceof Player) {
                     ((Player) entity).setVelocity(player.getLocation().getDirection().multiply(-1).normalize().multiply(2));
                 }
-
             }
 
             CooldownManager.setCooldown(player, "atom", cooldown);
             removeItemFromPlayer(player, item);
         } else {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "atom");
-
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
             player.sendMessage(ConfigurationManager.getAtomCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
         }
     }
 
 
-    private void handleBoost(Player player, ItemStack item){
+    private void handleBoost(Player player, ItemStack item) {
 
 
         int cooldownPlayer = PvPUtilities.getInstance().getConfigManager().getBoostPlayerCooldown();
@@ -214,13 +210,13 @@ public class PlayerListener implements Listener {
                 }, cooldownPlayer * 20);
 
                 // Mandare un messaggio al player
-                targetPlayer.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noBow"));
+                targetPlayer.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noBow"));
 
                 CooldownManager.setCooldown(player, "boost", cooldown);
                 removeItemFromPlayer(player, item);
             } else {
                 // Se non ci sono player nel raggio, o se ne sto guardando due assieme, manda un messaggio al player
-                player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noplayer"));
+                player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noplayer"));
 
             }
         } else {
@@ -230,7 +226,8 @@ public class PlayerListener implements Listener {
             player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
         }
     }
-    private void handleForza(Player player, ItemStack item){
+
+    private void handleForza(Player player, ItemStack item) {
 
 
         int cooldownPlayer = PvPUtilities.getInstance().getConfigManager().getForzaPlayerCooldown();
@@ -248,7 +245,7 @@ public class PlayerListener implements Listener {
             }, cooldownPlayer * 20);
 
             // Mandare un messaggio al player
-            player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.forzaricevuta"));
+            player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.forzaricevuta"));
 
             CooldownManager.setCooldown(player, "forza", cooldown);
             removeItemFromPlayer(player, item);
@@ -261,7 +258,7 @@ public class PlayerListener implements Listener {
     }
 
 
-    private void handleSquid(Player player, ItemStack item){
+    private void handleSquid(Player player, ItemStack item) {
 
 
         int cooldownPlayer = PvPUtilities.getInstance().getConfigManager().getSquidPlayerCooldown();
@@ -293,13 +290,13 @@ public class PlayerListener implements Listener {
                 }, cooldownPlayer * 20);
 
                 // Mandare un messaggio al player
-                targetPlayer.sendMessage(ConfigurationManager.getMessage(plugin,"messages.cecità"));
+                targetPlayer.sendMessage(ConfigurationManager.getMessage(plugin, "messages.cecità"));
 
                 CooldownManager.setCooldown(player, "squid", cooldown);
                 removeItemFromPlayer(player, item);
             } else {
                 // Se non ci sono player nel raggio, o se ne sto guardando due assieme, manda un messaggio al player
-                player.sendMessage(ConfigurationManager.getMessage(plugin,"messages.noplayer"));
+                player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noplayer"));
 
             }
         } else {
@@ -310,115 +307,86 @@ public class PlayerListener implements Listener {
         }
 
 
-
     }
 
 
     private void handlePick(Player player, ItemStack item, Block clickedBlock) {
-
         // Controllo se il giocatore ha cliccato con l'oggetto giusto
         if (item != null && item.isSimilar(createPickItem())) { // Verifica se l'oggetto è simile a quello creato
             if (CooldownManager.canUse(player, "pick")) {
-                int range = PvPUtilities.getInstance().getConfigManager().getPickRange();  //da aggiungere al config
-                int cooldown = PvPUtilities.getInstance().getConfigManager().getPickCooldown();   //da aggiungere al config
+                int range = PvPUtilities.getInstance().getConfigManager().getPickRange();
+                int cooldown = PvPUtilities.getInstance().getConfigManager().getPickCooldown();
 
-
-
-
-
-                // Controllo se il blocco su cui ha cliccato è ossidiana
+                List<String> savedObsidian = PvPUtilities.getInstance().getConfig().getStringList("saved_blocks.obsidian");
 
                 if (clickedBlock != null && clickedBlock.getType() == Material.OBSIDIAN) {
-
-                    clickedBlock.setType(Material.AIR);
                     for (int x = -range; x <= range; x++) {
                         for (int y = -range; y <= range; y++) {
                             for (int z = -range; z <= range; z++) {
                                 Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX() + x, player.getLocation().getBlockY() + y, player.getLocation().getBlockZ() + z);
-                                if (block.getType() == Material.OBSIDIAN) {
-                                    block.setType(Material.AIR);
+                                String locationString = block.getX() + "_" + block.getY() + "_" + block.getZ();
+                                if (!savedObsidian.contains(locationString)) {
+                                    // Rimuovi solo i blocchi che non sono stati salvati
+                                    if (block.getType() == Material.OBSIDIAN) {
+                                        block.setType(Material.AIR);
+                                    }
                                 }
                             }
                         }
                     }
+
                     CooldownManager.setCooldown(player, "pick", cooldown);
                     removeItemFromPlayer(player, item);
                 } else {
-
                     player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noObsidian"));
                 }
-
-
-
-
             } else {
                 long remainingCooldown = CooldownManager.getRemainingCooldown(player, "pick");
-
                 int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
                 player.sendMessage(ConfigurationManager.getPickCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
             }
-
         }
+
     }
 
     private void handleCesoie(Player player, ItemStack item, Block clickedBlock) {
-
-
         // Controllo se il giocatore ha cliccato con l'oggetto giusto
         if (item != null && item.isSimilar(createCesoieItem())) { // Verifica se l'oggetto è simile a quello creato
             if (CooldownManager.canUse(player, "cesoie")) {
-                int range = PvPUtilities.getInstance().getConfigManager().getCesoieRange();  //da aggiungere al config
-                int cooldown = PvPUtilities.getInstance().getConfigManager().getCesoieCooldown();   //da aggiungere al config
+                int range = PvPUtilities.getInstance().getConfigManager().getCesoieRange();
+                int cooldown = PvPUtilities.getInstance().getConfigManager().getCesoieCooldown();
 
 
-
-
-                // Controllo se il blocco su cui ha cliccato è cobweb
+                List<String> savedCobweb = PvPUtilities.getInstance().getConfig().getStringList("saved_blocks.cobweb");
 
                 if (clickedBlock != null && clickedBlock.getType() == Material.WEB) {
-                    clickedBlock.setType(Material.AIR);
-
-
                     for (int x = -range; x <= range; x++) {
                         for (int y = -range; y <= range; y++) {
                             for (int z = -range; z <= range; z++) {
                                 Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX() + x, player.getLocation().getBlockY() + y, player.getLocation().getBlockZ() + z);
-                                if (block.getType() == Material.WEB && !PvPUtilities.getInstance().getConfig().getStringList("block-list").contains(locationToString(block.getLocation()))) {
-                                    block.setType(Material.AIR);
+                                String locationString = block.getX() + "_" + block.getY() + "_" + block.getZ();
+                                if (!savedCobweb.contains(locationString)) {
+                                    // Rimuovi solo i blocchi che non sono stati salvati
+                                    if (block.getType() == Material.WEB) {
+                                        block.setType(Material.AIR);
+                                    }
                                 }
                             }
                         }
                     }
+
                     CooldownManager.setCooldown(player, "cesoie", cooldown);
                     removeItemFromPlayer(player, item);
-                } else {
-
+                }else {
                     player.sendMessage(ConfigurationManager.getMessage(plugin, "messages.noCobweb"));
                 }
-
-
-
 
             } else {
                 long remainingCooldown = CooldownManager.getRemainingCooldown(player, "cesoie");
                 int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
-
                 player.sendMessage(ConfigurationManager.getCesoieCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
             }
-
-        }
-    }
-
-    @EventHandler
-    public void onPlace(BlockPlaceEvent e) {
-        Player p = e.getPlayer();
-        if (builders.contains(p)) {
-            String locString = locationToString(e.getBlock().getLocation());
-            PvPUtilities.getInstance().getConfig().getStringList("block-list").add(locString);
-            p.sendMessage("Blocco piazzato in buildmode");
         }
     }
 
 }
-
-

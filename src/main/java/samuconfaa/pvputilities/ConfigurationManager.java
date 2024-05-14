@@ -30,6 +30,9 @@ public class ConfigurationManager {
     public int getFlashEffectDuration() {
         return config.getInt("flash.effect_duration", 7);
     }
+    public int getRangeSetblock() {
+        return config.getInt("setblock.range", 10);
+    }
 
     public int getFlashCooldown() {
         return config.getInt("flash.cooldown", 90);
@@ -189,7 +192,7 @@ public class ConfigurationManager {
     }
 
 
-    }
+}
 
 
 // push

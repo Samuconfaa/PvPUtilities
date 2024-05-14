@@ -2,18 +2,21 @@ package samuconfaa.pvputilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PvPCommand implements CommandExecutor {
 
     private final PvPUtilities plugin;
-    public static Set<Player> builders = new HashSet<>();
 
     public PvPCommand(PvPUtilities plugin) {
         this.plugin = plugin;
@@ -30,6 +33,13 @@ public class PvPCommand implements CommandExecutor {
                     sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.no_reload_permission"));
                 }
                 return true;
+            } else if (args.length == 1 && args[0].equalsIgnoreCase("setblock")) {
+                if (sender.hasPermission("pvpu.setblock")) {
+                    saveBlocks(sender);
+                } else {
+                    sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.no_setblock_permission"));
+                }
+                return true;
             } else if (args.length == 2 && sender.hasPermission("pvpu.pvp")) {
                 Player target = Bukkit.getPlayer(args[1]);
                 if (target != null) {
@@ -41,11 +51,11 @@ public class PvPCommand implements CommandExecutor {
                         target.getInventory().addItem(ItemManager.createAtomItem());
                         sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_given").replace("{player}", target.getName()));
                         target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.atom_received"));
-                    } else if (args[0].equalsIgnoreCase("boost")) {
+                    } else if(args[0].equalsIgnoreCase("boost"))    {
                         target.getInventory().addItem(ItemManager.createAntiBoostItem());
                         sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_given").replace("{player}", target.getName()));
                         target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.boost_received"));
-                    } else if (args[0].equalsIgnoreCase("pick")) {
+                    } else if(args[0].equalsIgnoreCase("pick"))    {
                         target.getInventory().addItem(ItemManager.createPickItem());
                         sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_given").replace("{player}", target.getName()));
                         target.sendMessage(ConfigurationManager.getMessage(plugin, "messages.pick_received"));
@@ -68,18 +78,7 @@ public class PvPCommand implements CommandExecutor {
                     sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.player_not_found").replace("{player}", args[1]));
                 }
                 return true;
-            } else if (args[0].equalsIgnoreCase("build") && sender instanceof Player) {
-
-            Player player = (Player) sender;
-            if (builders.contains(player)) {
-                builders.remove(player);
-                sender.sendMessage("buildmode disattivata");
-            }
-
-            builders.add(player);
-            sender.sendMessage("buildmode attivata");
-
-        } else if (sender instanceof Player && !sender.hasPermission("pvpu.pvp")) {
+            } else if (sender instanceof Player && !sender.hasPermission("pvpu.pvp")) {
                 sender.sendMessage("§4PvPUtilities Custom Items by Samuconfaa");
                 return true;
             } else {
@@ -88,5 +87,35 @@ public class PvPCommand implements CommandExecutor {
             }
         }
         return false;
+    }
+
+    private void saveBlocks(CommandSender sender) {
+        Map<String, Integer> obsidianLocations = new HashMap<>();
+        Map<String, Integer> cobwebLocations = new HashMap<>();
+
+        Player player = (Player) sender;
+        int radius = PvPUtilities.getInstance().getConfigManager().getRangeSetblock(); // Raggio di ricerca dei blocchi
+
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX() + x, player.getLocation().getBlockY() + y, player.getLocation().getBlockZ() + z);
+                    if (block.getType() == Material.OBSIDIAN) {
+                        String locationString = block.getX() + "_" + block.getY() + "_" + block.getZ();
+                        obsidianLocations.put(locationString, 1);
+                    } else if (block.getType() == Material.WEB) {
+                        String locationString = block.getX() + "_" + block.getY() + "_" + block.getZ();
+                        cobwebLocations.put(locationString, 1);
+                    }
+                }
+            }
+        }
+
+        // Salva i blocchi nel file di configurazione
+        plugin.getConfig().set("saved_blocks.obsidian", new ArrayList<>(obsidianLocations.keySet()));
+        plugin.getConfig().set("saved_blocks.cobweb", new ArrayList<>(cobwebLocations.keySet()));
+        plugin.saveConfig();
+
+        sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.blocks_saved"));
     }
 }
