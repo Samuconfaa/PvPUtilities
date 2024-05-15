@@ -187,7 +187,7 @@ public class ConfigurationManager {
         return config.getString("items.cesoie.name", "§6§lCesoie");
     }
 
-    public static List<String> getCesoieLore() {                    //aggiungere al config
+    public static List<String> getCesoieLore() {
         return Collections.singletonList(config.getString("items.cesoie.lore", "§7Tasto Destro per usare!"));
     }
 
@@ -195,4 +195,3 @@ public class ConfigurationManager {
 }
 
 
-// push

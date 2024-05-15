@@ -94,7 +94,7 @@ public class PvPCommand implements CommandExecutor {
         Map<String, Integer> cobwebLocations = new HashMap<>();
 
         Player player = (Player) sender;
-        int radius = PvPUtilities.getInstance().getConfigManager().getRangeSetblock(); // Raggio di ricerca dei blocchi
+        int radius = PvPUtilities.getInstance().getConfigManager().getRangeSetblock();
 
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
@@ -111,7 +111,6 @@ public class PvPCommand implements CommandExecutor {
             }
         }
 
-        // Salva i blocchi nel file di configurazione
         plugin.getConfig().set("saved_blocks.obsidian", new ArrayList<>(obsidianLocations.keySet()));
         plugin.getConfig().set("saved_blocks.cobweb", new ArrayList<>(cobwebLocations.keySet()));
         plugin.saveConfig();
