@@ -200,7 +200,7 @@ public class PlayerListener implements Listener {
 
             if (playerFound) {
                 // Impedisce al player target di usare l'arco per il tempo specificato
-                targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, cooldown * 20, 255));
+                targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, cooldownPlayer * 20, 255));
 
                 // Avvia il countdown del cooldown
                 Player finalTargetPlayer = targetPlayer;
@@ -280,7 +280,7 @@ public class PlayerListener implements Listener {
 
             if (playerFound) {
                 // Impedisce al player target di usare l'arco per il tempo specificato
-                targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, cooldown * 20, 255));
+                targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, cooldownPlayer * 20, 255));
 
                 // Avvia il countdown del cooldown
                 Player finalTargetPlayer = targetPlayer;

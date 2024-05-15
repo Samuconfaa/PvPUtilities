@@ -71,7 +71,7 @@ messages:
   noObsidian: "§cNon stai guardando nessun blocco di ossidiana!"
   noCobweb: "§cNon stai guardando nessuna ragnatela!"
   forzaricevuta: "§2Forza applicata correttamente"
-  block_saved: "§2Blocchi salvati!"
+  blocks_saved: "§2Blocchi salvati!"
   no_setblock_permission: "§cNon hai i permessi per fare questo!"
 
 
