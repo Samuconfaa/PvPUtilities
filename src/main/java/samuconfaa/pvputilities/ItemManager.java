@@ -17,7 +17,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.FEATHER);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getFlashItemName());
-        meta.setLore(ConfigurationManager.getFlashItemLore("items.flash.lore"));
+        meta.setLore(ConfigurationManager.getFlashItemLore());
         item.setItemMeta(meta);
 
 

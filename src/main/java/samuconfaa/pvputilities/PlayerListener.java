@@ -56,6 +56,43 @@ public class PlayerListener implements Listener {
             }
         }
 
+
+        ItemStack item = player.getItemInHand();
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        String displayName = meta.getDisplayName();
+        if (displayName == null) return; // Verifica se il nome visualizzato non è nullo
+
+        if (Objects.equals(displayName, ConfigurationManager.getAtomItemName())) handleAtom(player, item);
+        if (Objects.equals(displayName, ConfigurationManager.getFlashItemName())) handleFlash(player, item);
+        if (Objects.equals(displayName, ConfigurationManager.getForzaItemName())) handleForza(player, item);
+        if (Objects.equals(displayName, ConfigurationManager.getPickItemName()))
+            handlePick(player, item, e.getClickedBlock());
+        if (Objects.equals(displayName, ConfigurationManager.getAntiBoostItemName())) handleBoost(player, item);
+        if (Objects.equals(displayName, ConfigurationManager.getCesoieItemName()))
+            handleCesoie(player, item, e.getClickedBlock());
+        if (Objects.equals(displayName, ConfigurationManager.getSquidItemName())) handleSquid(player, item);
+
+        // Aggiorna il tempo dell'ultimo clic destro
+        lastRightClickTimes.put(playerName, System.currentTimeMillis());
+    }
+
+    @EventHandler
+    public void onLeftClick(PlayerInteractEvent e){
+        if (e.getAction() != Action.LEFT_CLICK_BLOCK && e.getAction() != Action.LEFT_CLICK_AIR) return;
+        Player player = e.getPlayer();
+        String playerName = player.getName();
+
+        // Controllo del cooldown per il tasto destro
+        if (lastRightClickTimes.containsKey(playerName)) {
+            long lastRightClickTime = lastRightClickTimes.get(playerName);
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastRightClickTime < rightClickDelay) {
+                // Se è passato meno del tempo di ritardo, non fare nulla
+                return;
+            }
+        }
+
         // Se il giocatore può fare un altro clic destro, esegui le azioni associate
         ItemStack item = player.getItemInHand();
         ItemMeta meta = item.getItemMeta();
@@ -311,7 +348,6 @@ public class PlayerListener implements Listener {
 
 
     private void handlePick(Player player, ItemStack item, Block clickedBlock) {
-        // Controllo se il giocatore ha cliccato con l'oggetto giusto
         if (item != null && item.isSimilar(createPickItem())) { // Verifica se l'oggetto è simile a quello creato
             if (CooldownManager.canUse(player, "pick")) {
                 int range = PvPUtilities.getInstance().getConfigManager().getPickRange();

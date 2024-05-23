@@ -106,7 +106,7 @@ public class ConfigurationManager {
         return config.getString("items.flash.name", "§b§lFlash");
     }
 
-    public static List<String> getFlashItemLore(String s) {
+    public static List<String> getFlashItemLore() {
         return Collections.singletonList(config.getString("items.flash.lore", "§7Tasto Destro per usare!"));
     }
 
@@ -187,7 +187,7 @@ public class ConfigurationManager {
         return config.getString("items.cesoie.name", "§6§lCesoie");
     }
 
-    public static List<String> getCesoieLore() {
+    public static List<String> getCesoieLore() {                    //aggiungere al config
         return Collections.singletonList(config.getString("items.cesoie.lore", "§7Tasto Destro per usare!"));
     }
 
@@ -195,3 +195,4 @@ public class ConfigurationManager {
 }
 
 
+// push
