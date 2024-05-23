@@ -111,6 +111,7 @@ public class ConfigurationManager {
     }
 
 
+
     public static String getFlashCooldownMessage() {
         return ChatColor.translateAlternateColorCodes('&', config.getString("messages.flash_cooldown_message"));
     }

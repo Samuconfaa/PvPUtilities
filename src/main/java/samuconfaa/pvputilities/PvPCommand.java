@@ -96,6 +96,7 @@ public class PvPCommand implements CommandExecutor {
         Player player = (Player) sender;
         int radius = PvPUtilities.getInstance().getConfigManager().getRangeSetblock();
 
+
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {

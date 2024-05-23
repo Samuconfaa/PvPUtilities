@@ -52,6 +52,7 @@ public class CooldownManager {
             return 0;
         }
 
+
         long cooldownTime = playerCooldowns.get(ability);
         long currentTime = System.currentTimeMillis();
         long remainingTime = cooldownTime - currentTime;

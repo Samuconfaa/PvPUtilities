@@ -38,6 +38,7 @@ cesoie:
 setblock:
   range: 150
 
+
 messages:
   flash_given: "§aHai dato Flash a {player}"
   flash_received: "§aHai ricevuto Flash"

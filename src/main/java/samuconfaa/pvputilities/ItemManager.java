@@ -36,6 +36,7 @@ public class ItemManager {
 
 
 
+
     public static ItemStack createAntiBoostItem() {
         ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();

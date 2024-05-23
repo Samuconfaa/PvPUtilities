@@ -57,6 +57,7 @@ public class PlayerListener implements Listener {
         }
 
 
+
         ItemStack item = player.getItemInHand();
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;

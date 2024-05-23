@@ -18,6 +18,7 @@ public class PvPUtilities extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
     }
 
+
     public static PvPUtilities getInstance() {
         return instance;
     }
