@@ -17,7 +17,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.FEATHER);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getFlashItemName());
-        meta.setLore(ConfigurationManager.getFlashItemLore());
+        meta.setLore(Collections.singletonList(ConfigurationManager.getFlashItemLore()));
         item.setItemMeta(meta);
 
 
@@ -28,7 +28,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.BLAZE_ROD);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getAtomItemName());
-        meta.setLore(ConfigurationManager.getAtomItemLore());
+        meta.setLore(Collections.singletonList(ConfigurationManager.getAtomItemLore()));
         item.setItemMeta(meta);
 
         return item;
@@ -41,17 +41,17 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getAntiBoostItemName());
-        meta.setLore(ConfigurationManager.getAntiBoostLore());
+        meta.setLore(Collections.singletonList(ConfigurationManager.getAntiBoostLore()));
         item.setItemMeta(meta);
 
         return item;
     }
 
     public static ItemStack createPickItem() {
-        ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE);
+        ItemStack item = new ItemStack(Material.TNT);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getPickItemName());
-        meta.setLore(ConfigurationManager.getPickLore());
+        meta.setLore(Collections.singletonList(ConfigurationManager.getPickLore()));
         item.setItemMeta(meta);
 
         return item;
@@ -59,10 +59,10 @@ public class ItemManager {
 
 
     public static ItemStack createCesoieItem() {
-        ItemStack item = new ItemStack(Material.SHEARS);
+        ItemStack item = new ItemStack(Material.GLOWSTONE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getCesoieItemName());
-        meta.setLore(ConfigurationManager.getCesoieLore());
+        meta.setLore(Collections.singletonList(ConfigurationManager.getCesoieLore()));
         item.setItemMeta(meta);
 
         return item;
@@ -72,7 +72,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.INK_SACK);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getSquidItemName());
-        meta.setLore(ConfigurationManager.getSquidLore());
+        meta.setLore(Collections.singletonList(ConfigurationManager.getSquidLore()));
         item.setItemMeta(meta);
 
         return item;
@@ -83,7 +83,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.IRON_INGOT);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ConfigurationManager.getForzaItemName());
-        meta.setLore(ConfigurationManager.getForzaLore());
+        meta.setLore(Collections.singletonList(ConfigurationManager.getForzaLore()));
         item.setItemMeta(meta);
 
         return item;

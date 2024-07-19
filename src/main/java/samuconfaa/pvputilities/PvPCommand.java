@@ -27,7 +27,7 @@ public class PvPCommand implements CommandExecutor {
         if (label.equalsIgnoreCase("pvpu")) {
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("pvpu.reload")) {
-                    plugin.reloadConfig();
+                    ConfigurationManager.reloadConfig();
                     sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.reload"));
                 } else {
                     sender.sendMessage(ConfigurationManager.getMessage(plugin, "messages.no_reload_permission"));

@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.Sound;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -41,6 +42,24 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
+    public void onBlockPlace(BlockPlaceEvent e){
+        Block blockPlaced = e.getBlockPlaced();
+        Material blockType = blockPlaced.getType();
+        Player player = e.getPlayer();
+        String playerName = player.getName();
+        ItemStack item = player.getItemInHand();
+        ItemMeta meta = item.getItemMeta();
+        String displayName = meta.getDisplayName();
+        if (Objects.equals(displayName, ConfigurationManager.getPickItemName())){
+            e.setCancelled(true);
+        }
+        if (Objects.equals(displayName, ConfigurationManager.getCesoieItemName())){
+            e.setCancelled(true);
+        }
+
+    }
+
+    @EventHandler
     public void onRightClick(PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
         Player player = e.getPlayer();
@@ -54,6 +73,7 @@ public class PlayerListener implements Listener {
                 // Se è passato meno del tempo di ritardo, non fare nulla
                 return;
             }
+
         }
 
 
@@ -274,7 +294,7 @@ public class PlayerListener implements Listener {
 
 
             // Effetto dato al giocatore che esegue l'azione
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, cooldown * 20, 10));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, cooldownPlayer * 20, ConfigurationManager.getForzaIntensity()));
 
             // Avvia il countdown del cooldown
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -291,7 +311,7 @@ public class PlayerListener implements Listener {
             long remainingCooldown = CooldownManager.getRemainingCooldown(player, "forza");
             int remainingSeconds = (int) Math.ceil(remainingCooldown / 1000.0);
 
-            player.sendMessage(ConfigurationManager.getBoostCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
+            player.sendMessage(ConfigurationManager.getForzaCooldownMessage().replace("{seconds}", String.valueOf(remainingSeconds)));
         }
     }
 

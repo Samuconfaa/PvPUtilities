@@ -5,7 +5,9 @@ package samuconfaa.pvputilities;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class ConfigurationManager {
 
     private final PvPUtilities plugin;
     private static FileConfiguration config;
+    private static File configFile;
 
     public ConfigurationManager(PvPUtilities plugin) {
         this.plugin = plugin;
@@ -21,6 +24,11 @@ public class ConfigurationManager {
     public void loadConfig() {
         plugin.saveDefaultConfig();
         config = plugin.getConfig();
+        configFile = new File(plugin.getDataFolder(), "config.yml");
+    }
+
+    public static void reloadConfig(){
+        config = YamlConfiguration.loadConfiguration(configFile);
     }
 
     public int getFlashJumpDistance() {
@@ -97,8 +105,12 @@ public class ConfigurationManager {
         return config.getString("items.atom.name", "§6§lAtom");
     }
 
-    public static List<String> getAtomItemLore() {
-        return Collections.singletonList(config.getString("items.atom.lore", "§7Tasto Destro per usare!"));
+    public static int getForzaIntensity(){
+        return config.getInt("forza.amplificatore");
+    }
+
+    public static String getAtomItemLore() {
+        return config.getString("items.atom.lore");
     }
 
 
@@ -106,8 +118,8 @@ public class ConfigurationManager {
         return config.getString("items.flash.name", "§b§lFlash");
     }
 
-    public static List<String> getFlashItemLore() {
-        return Collections.singletonList(config.getString("items.flash.lore", "§7Tasto Destro per usare!"));
+    public static String getFlashItemLore() {
+        return config.getString("items.flash.lore", "§7Tasto Destro per usare!");
     }
 
 
@@ -118,6 +130,9 @@ public class ConfigurationManager {
 
     public static String getCesoieCooldownMessage() {
         return ChatColor.translateAlternateColorCodes('&', config.getString("messages.cesoie_cooldown_message"));
+    }
+    public static String getForzaCooldownMessage() {
+        return ChatColor.translateAlternateColorCodes('&', config.getString("messages.forza_cooldown_message"));
     }
 
     public static String getPickCooldownMessage() {
@@ -142,8 +157,8 @@ public class ConfigurationManager {
         return config.getString("items.antiboost.name", "§2§lAnti-Boost");
     }
 
-    public static List<String> getAntiBoostLore() {
-        return Collections.singletonList(config.getString("items.antiboost.lore", "§7Tasto Destro per usare!"));
+    public static String getAntiBoostLore() {
+        return config.getString("items.antiboost.lore", "§7Tasto Destro per usare!");
     }
 
 
@@ -160,16 +175,16 @@ public class ConfigurationManager {
 
 
 
-    public static List<String> getPickLore() {
-        return Collections.singletonList(config.getString("items.pick.lore", "§7Tasto Destro per usare!"));
+    public static String getPickLore() {
+        return config.getString("items.pick.lore", "§7Tasto Destro per usare!");
     }
 
-    public static List<String> getSquidLore() {
-        return Collections.singletonList(config.getString("items.squid.lore", "§7Tasto Destro per usare!"));
+    public static String getSquidLore() {
+        return config.getString("items.squid.lore", "§7Tasto Destro per usare!");
     }
 
-    public static List<String> getForzaLore() {
-        return Collections.singletonList(config.getString("items.forza.lore", "§7Tasto Destro per usare!"));
+    public static String getForzaLore() {
+        return config.getString("items.forza.lore", "§7Tasto Destro per usare!");
     }
 
     public static String getPickItemName() {
@@ -188,9 +203,12 @@ public class ConfigurationManager {
         return config.getString("items.cesoie.name", "§6§lCesoie");
     }
 
-    public static List<String> getCesoieLore() {                    //aggiungere al config
-        return Collections.singletonList(config.getString("items.cesoie.lore", "§7Tasto Destro per usare!"));
+    public static String getCesoieLore() {                    //aggiungere al config
+        return config.getString("items.cesoie.lore", "§7Tasto Destro per usare!");
     }
+
+
+
 
 
 }

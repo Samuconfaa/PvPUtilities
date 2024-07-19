@@ -26,6 +26,7 @@ squid:
 forza:
   cooldown: 90
   playercooldown: 10
+  amplificatore: 3
 
 pick:
   range: 4
@@ -59,6 +60,7 @@ messages:
   cesoie_given: "§aHai dato Cesoie a {player}"
   cesoie_received: "§aHai ricevuto Cesoie"
   boost_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Anti-Boost nuovamente!"
+  forza_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Forza nuovamente!"
   pick_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Piccone nuovamente!"
   cesoie_cooldown_message: "§cDevi aspettare altri {seconds} secondi prima di usare Cesoie nuovamente!"
   noblock: "§cNon puoi piazzare blocchi"
