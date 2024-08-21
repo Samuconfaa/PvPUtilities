@@ -292,6 +292,10 @@ public class PlayerListener implements Listener {
         if (CooldownManager.canUse(player, "forza")) {
             int cooldown = PvPUtilities.getInstance().getConfigManager().getForzaCooldown();
 
+            if(player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)){
+                player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+            }
+
 
             // Effetto dato al giocatore che esegue l'azione
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, cooldownPlayer * 20, ConfigurationManager.getForzaIntensity()));
